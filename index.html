@@ -53,7 +53,7 @@ details details{background:var(--bg);margin:10px 0 0}
 #pop{position:fixed;z-index:50;width:280px;max-height:360px;display:none;flex-direction:column;background:var(--p2);border:1px solid var(--b2);border-radius:12px;box-shadow:0 16px 48px rgba(0,0,0,.6);padding:8px}
 #pop input{margin-bottom:6px;border-color:var(--a)}#pop .ls{overflow:auto}#pop .it{display:flex;align-items:center;gap:10px;padding:8px;border-radius:7px;cursor:pointer}#pop .it:hover,#pop .it.on{background:var(--b)}#pop .it img{width:22px;height:22px;object-fit:contain}
 </style></head><body><div id="pop"><input id="ps" placeholder="Найти команду…" autocomplete="off"><div class="ls" id="pl"></div></div>
-<div class="top"><div class="brand"><b>.cs2</b>creator</div><div style="display:flex;align-items:center;gap:2px;margin-left:auto"><button class="ico" id="un" title="Отменить (Ctrl+Z)">↶</button><button class="ico" id="re" title="Вернуть (Ctrl+Shift+Z)">↷</button><div class="ver" id="ver" style="margin-left:8px">v53</div></div></div>
+<div class="top"><div class="brand"><b>.cs2</b>creator</div><div style="display:flex;align-items:center;gap:2px;margin-left:auto"><button class="ico" id="un" title="Отменить (Ctrl+Z)">↶</button><button class="ico" id="re" title="Вернуть (Ctrl+Shift+Z)">↷</button><div class="ver" id="ver" style="margin-left:8px">v54</div></div></div>
 <div class="app">
 <div class="col"><h1>Шаблоны</h1><div id="tpls"></div></div>
 <div class="col">
@@ -100,15 +100,16 @@ function W(s,font,ls){X.font=font;X.letterSpacing=ls+'px';return X.measureText(s
 function fitS(s,fam,size,max,lsK){let z=size;while(z>20&&W(s,`${z}px ${fam}`,z*lsK)>max)z-=1;return z}
 function drawQuote(){X.fillStyle='#111';X.fillRect(0,0,1080,1080);photo(775);
  if(IMG.ovq)X.drawImage(IMG.ovq,0,0);if(!SP('q_sp')&&IMG.qnw){X.drawImage(IMG.qnw,300,995);tag(457,1011);if(IMG.exe)X.drawImage(IMG.exe,547,1015)}
- const nm=S.q_name.toUpperCase(),fs=fitS(nm,"'Druk'",108,700,-.025),ls=-.025*fs,k=fs/108,tw=W(nm,`${fs}px 'Druk'`,ls),hw=tw/2+13*k,h=61*k;
+ const nm=S.q_name.toUpperCase(),fs=fitS(nm,"'Druk'",Math.round(108*QN()),Math.min(1000,700*Math.max(1,QN())),-.025),ls=-.025*fs,k=fs/108,tw=W(nm,`${fs}px 'Druk'`,ls),hw=tw/2+13*k,h=61*k;
  X.save();X.translate(539,709);X.rotate(-2.4*Math.PI/180);
  P([[-hw,-h],[hw,-h],[hw+6*k,h],[-hw,h]],'#000010');
  TT(nm,0,37*k,`${fs}px 'Druk'`,'#f5f5f5','center',ls);X.restore();
  const q=qfit(S.q_text.toUpperCase()),top=890-((q.L.length-1)*q.lh+q.cap)/2;
  q.L.forEach((l,i)=>TT(l,554,top+q.cap+i*q.lh,`500 ${q.sz}px ${MONO}`,'#00000e','center',q.ls))}
-function qfit(t){const ws=t.replace(/\n/g,' \n ').split(/[ \t]+/).filter(Boolean);for(let sz=39;sz>=22;sz--){const ls=-sz*.0367,f=`500 ${sz}px ${MONO}`,L=[];let l='';
+const QN=()=>(+S.q_nz||100)/100,QT=()=>(+S.q_tz||100)/100;
+function qfit(t){const ws=t.replace(/\n/g,' \n ').split(/[ \t]+/).filter(Boolean),k=QT(),mn=Math.round(22*Math.min(1,k)),H=172*Math.max(1,k);for(let sz=Math.round(39*k);sz>=mn;sz--){const ls=-sz*.0367,f=`500 ${sz}px ${MONO}`,L=[];let l='';
   ws.forEach(w=>{if(w=='\n'){L.push(l);l='';return}const q=l?l+' '+w:w;if(W(q,f,ls)>950&&l){L.push(l);l=w}else l=q});if(l)L.push(l);
-  const lh=sz*1.333,cap=sz*.73;if((L.length-1)*lh+cap<=172||sz==22)return{L,sz,ls,lh,cap}}}
+  const lh=sz*1.333,cap=sz*.73;if((L.length-1)*lh+cap<=H||sz==mn)return{L,sz,ls,lh,cap}}}
 
 function drawStats(){X.fillStyle=C.k;X.fillRect(0,0,1080,1080);photo(1080,true);
  const g=X.createLinearGradient(0,0,640,0);g.addColorStop(0,'rgba(12,12,12,.95)');g.addColorStop(.55,'rgba(12,12,12,.78)');g.addColorStop(1,'rgba(12,12,12,0)');X.fillStyle=g;X.fillRect(0,0,1080,1080);
@@ -491,12 +492,12 @@ function drawFrame(p,Z){p=p===undefined?im.photo_frame:p;Z=Z||S;const [Wd,Hd]=fr
 
 // ---- ЦИТАТА 2 ----
 ldI('ovq2','data:image/webp;base64,UklGRlQEAABXRUJQVlA4TEgEAAAvN8QNEYcgFkzm/0ecxOyPgJm2bXP7PAIZrJUB0xAAAsDjTgiwHMdtIzkSlX/Y3bvn7SsiJsDsf956LVc9ASeq0YWDttkVl+svJ7feQNxBkwoKZRZ0ewi2rcZt9PsxbQgU9r/eDukkJxanjuj/BChs27b5//p0ihExAeP0P//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP//zP/+HV1DeJQYobxMDlM8SnQCo5u+aipq/bSpq/llT+buJ5YiXyHo3wyPr7QyPrM9m+N9tG1Yj8ZrjNC5G0JikCsVaRMtZSuPxDJSfTPxx4jXNLsczXvwnX7jwiddPdjn9x3/KBY2mgZYLDzQmTrwWHlo2DeJ1+o//Xn3QmDhoLDy0nDhaLjziNXHidfrv8wcSPQMvpkTHIJ5hG1qGqrwq0TJUhm1oGaryqkTLUBm2YRqgsVBV5VWJSaDlUlUZpsQUiNdaVZVhG1qGqrxuuPNA45hXeVXirvP08nrQqwxT4o6Dzdw9co7SeCSpyjAl7jYDFBE1n8nIG2XYhmNJVYZtuNu8CcpMqvltTYlxNKnK64a7zmSCcltiHDppeZvK64aH0UEVm3nkLer15ak3GKCo+S1tw99Fy5+VxiVmjAHKLYnxd2Mz/9G2YZWZUFB+NDFO/5/+53/+5//mCcq3JzoAUM2/vanMK7HM8BJZ3z7D59VUiDVGvPZlhl/YMlRVPMuZSjy8MvxMNZUpJ+4oh9UMn3LbsPzMehqbhnL5b0MomobXl6emIRRNg8s4/TfdUDQNafxnQyiaBpdx+q+mhKJpSOM/G0LRNLiM03+LBhpNAy2bBvE6/fcqomXTAI2mYYif/uO/XASNpoGWTYN4/bOBlk0DNJqGIX76r6ZAo2mgZdMgXqf/+I//+I//+I//+I//+I//+I//+I//+I//+I//+I//+I//+I//+I//+I//+I//+I//+I//+I//+I//kgc0mgZaNg3idfqvptCyacBm/tHIPmGA8lE136GRi8onQdmhaj67kQewfQrK7Kr5vox8MKTxXjPBoOxLNZ/gyB0ViofV7gRlgtV8F0Z+C5exkoKyC9X8O164lOxFUL4j0RCc/j/9z//8z//8z//8z//8z//8/00F');
-function q2fit(t){const ws=t.replace(/\n/g,' \n ').split(/[ \t]+/).filter(Boolean);for(let sz=35;sz>=18;sz--){const ls=.013*sz,f=`500 ${sz}px ${MONO}`,L=[];let l='';
-  ws.forEach(w=>{if(w=='\n'){L.push(l);l='';return}const q=l?l+' '+w:w;if(W(q,f,ls)>950&&l){L.push(l);l=w}else l=q});if(l)L.push(l);const lh=sz*1.443;if((L.length-1)*lh+sz*.73<=175||sz==18)return{L,sz,ls,f,lh}}}
+function q2fit(t){const ws=t.replace(/\n/g,' \n ').split(/[ \t]+/).filter(Boolean),k=QT(),mn=Math.round(18*Math.min(1,k)),H=175*Math.max(1,k);for(let sz=Math.round(35*k);sz>=mn;sz--){const ls=.013*sz,f=`500 ${sz}px ${MONO}`,L=[];let l='';
+  ws.forEach(w=>{if(w=='\n'){L.push(l);l='';return}const q=l?l+' '+w:w;if(W(q,f,ls)>950&&l){L.push(l);l=w}else l=q});if(l)L.push(l);const lh=sz*1.443;if((L.length-1)*lh+sz*.73<=H||sz==mn)return{L,sz,ls,f,lh}}}
 function drawQuote2(){X.fillStyle=C.k;X.fillRect(0,0,1080,1080);photo();if(IMG.ovq2)X.drawImage(IMG.ovq2,0,0);
  tag(457,38);if(IMG.exe)X.drawImage(IMG.exe,545,41);
- const nm=(S.q_name||'').toUpperCase(),z=fitS(nm,"'Druk'",129,920,-.067),tw=W(nm,`${z}px 'Druk'`,-.067*z),pw=Math.max(568,tw+113);
- X.fillStyle='#1c1c1b';X.fillRect(539-pw/2,682,pw,131);TT(nm,539,796,`${z}px 'Druk'`,'#fff','center',-.067*z);
+ const nm=(S.q_name||'').toUpperCase(),z=fitS(nm,"'Druk'",Math.round(129*QN()),Math.min(1000,920*Math.max(1,QN())),-.067),tw=W(nm,`${z}px 'Druk'`,-.067*z),pw=Math.max(568,tw+113);
+ const ph=Math.max(131,131*z/129);X.fillStyle='#1c1c1b';X.fillRect(539-pw/2,747.5-ph/2,pw,ph);TT(nm,539,747.5+48.5*z/129,`${z}px 'Druk'`,'#fff','center',-.067*z);
  const q=q2fit((S.q_text||'').toUpperCase()),top=918.5-(q.L.length-1)*q.lh/2+q.sz*.73/2;q.L.forEach((l,i)=>TT(l,539.5,top+i*q.lh,q.f,'#1e1a14','center',q.ls))}
 
 
@@ -762,8 +763,8 @@ function tfForm(){const A=ACT();$('fm').innerHTML=actTop(1)+`<small>Утверж
  actTopBind(tfForm);$('ast').oninput=e=>{A.stmt=e.target.value;draw()};$('aex').oninput=e=>{A.expl=e.target.value;draw()};$('fm').querySelectorAll('[data-tr]').forEach(b=>b.onclick=()=>{A.truth=+b.dataset.tr;tfForm();draw()})}
 
 const TP={
- quote:{n:'Классика',g:'Цитата',d:drawQuote,f:[{k:'q_name',l:'Имя',t:'text',d:'ВЛАД'},{k:'q_sp',l:'Логотип WINLINE',t:'chk',d:'1'},{k:'q_text',l:'Цитата',t:'area',d:'FACEIT успешен просто потому что Valve похуй на читеров. Борись они с ними, FACEIT был бы не нужен.'},...PH]},
- quote2:{n:'С плашкой',g:'Цитата',d:drawQuote2,f:[{k:'q_name',l:'Имя',t:'text'},{k:'q_text',l:'Цитата',t:'area'},...PH]},
+ quote:{n:'Классика',g:'Цитата',d:drawQuote,f:[{k:'q_name',l:'Имя',t:'text',d:'ВЛАД'},{k:'q_sp',l:'Логотип WINLINE',t:'chk',d:'1'},{k:'q_nz',l:'Размер имени',t:'range',a:50,b:160,d:100},{k:'q_tz',l:'Размер текста',t:'range',a:50,b:160,d:100},{k:'q_text',l:'Цитата',t:'area',d:'FACEIT успешен просто потому что Valve похуй на читеров. Борись они с ними, FACEIT был бы не нужен.'},...PH]},
+ quote2:{n:'С плашкой',g:'Цитата',d:drawQuote2,f:[{k:'q_name',l:'Имя',t:'text'},{k:'q_text',l:'Цитата',t:'area'},{k:'q_nz',l:'Размер имени',t:'range',a:50,b:160,d:100},{k:'q_tz',l:'Размер текста',t:'range',a:50,b:160,d:100},...PH]},
  stats:{n:'Статистика игрока',d:drawStats,f:[{k:'s_name',l:'Ник',t:'text',d:'MAGNOJEZ'},{k:'s_auto',l:'Автофото по нику (база, потом HLTV)',t:'chk',d:'1'},{k:'s_team',l:'Команда',t:'text',d:'NAVI'},{k:'s_vs',l:'Подпись',t:'text',d:'НА MIRAGE'},{k:'s_kd',l:'K/D',t:'text',d:'25-14'},{k:'s_sw',l:'Swing%',t:'text',d:'+4.73%'},{k:'s_adr',l:'ADR',t:'text',d:'104.5'},{k:'s_kast',l:'KAST',t:'text',d:'70.8%'},{k:'s_rt',l:'Рейтинг',t:'text',d:'1.58'},{k:'logo',l:'Лого',t:'img'},...PH]},
  match:{n:'Классика',g:'Итоги матча',d:drawMatch,f:[{k:'m_score',l:'Счёт',t:'text',d:'2-0'},{k:'m_t1',l:'Команда 1',t:'text',d:'LEGACY'},{k:'m_t2',l:'Команда 2',t:'text',d:'DENDELE'},{k:'m_l1',l:'Лого 1',t:'img'},{k:'m_l2',l:'Лого 2',t:'img'},{k:'m_sp',l:'Логотип WINLINE',t:'chk',d:'1'},{k:'m_n1',l:'Меню 1',t:'text',d:'EXE    CS2    TOURNAMENTS'},{k:'m_n2',l:'Меню 2',t:'text',d:'NEWS    GIVEAWAY'},...PH]},
  match2:{n:'Вертикальный',g:'Итоги матча',d:drawMatch2,f:[{k:'m_score',l:'Счёт',t:'text',d:'2-0'},{k:'m_t1',l:'Команда 1',t:'text',d:'LEGACY'},{k:'m_t2',l:'Команда 2',t:'text',d:'DENDELE'},{k:'m_l1',l:'Лого 1',t:'img'},{k:'m_l2',l:'Лого 2',t:'img'},{k:'m2_sp',l:'Логотип WINLINE',t:'chk',d:'1'},{k:'m_n1',l:'Меню 1',t:'text'},{k:'m_n2',l:'Меню 2',t:'text'},...PH]},
