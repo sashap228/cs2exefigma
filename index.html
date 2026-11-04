@@ -48,7 +48,7 @@ details details{background:var(--bg);margin:10px 0 0}
 #pop{position:fixed;z-index:50;width:280px;max-height:360px;display:none;flex-direction:column;background:var(--p2);border:1px solid var(--b2);border-radius:12px;box-shadow:0 16px 48px rgba(0,0,0,.6);padding:8px}
 #pop input{margin-bottom:6px;border-color:var(--a)}#pop .ls{overflow:auto}#pop .it{display:flex;align-items:center;gap:10px;padding:8px;border-radius:7px;cursor:pointer}#pop .it:hover,#pop .it.on{background:var(--b)}#pop .it img{width:22px;height:22px;object-fit:contain}
 </style></head><body><div id="pop"><input id="ps" placeholder="Найти команду…" autocomplete="off"><div class="ls" id="pl"></div></div>
-<div class="top"><div class="brand"><b>.cs2</b>creator</div><div style="display:flex;align-items:center;gap:2px;margin-left:auto"><button class="ico" id="un" title="Отменить (Ctrl+Z)">↶</button><button class="ico" id="re" title="Вернуть (Ctrl+Shift+Z)">↷</button><div class="ver" id="ver" style="margin-left:8px">v43</div></div></div>
+<div class="top"><div class="brand"><b>.cs2</b>creator</div><div style="display:flex;align-items:center;gap:2px;margin-left:auto"><button class="ico" id="un" title="Отменить (Ctrl+Z)">↶</button><button class="ico" id="re" title="Вернуть (Ctrl+Shift+Z)">↷</button><div class="ver" id="ver" style="margin-left:8px">v44</div></div></div>
 <div class="app">
 <div class="col"><h1>Шаблоны</h1><div id="tpls"></div></div>
 <div class="col">
@@ -413,7 +413,7 @@ function cmpParse(txt,side){txt=(txt||'').trim();if(!txt)return;const q=txt.matc
 function cmpImg(f,i){AUTO['photo_cmp'+i]=null;AUTO['_photo_cmp'+i]=null;photoLoad(f,im_=>{im['photo_cmp'+i]=enhance(im_,[])})}
 function cmpForm(){const sl=i=>`<div class="mrow"><div class="r"><small style="width:auto;font:500 11px 'JBM',monospace">ИГРОК ${i}</small><button class="tp" data-pp="${i}" style="margin-left:auto;flex:0 1 200px"><span>${(AUTO['photo_cmp'+i]&&findPlayer(AUTO['photo_cmp'+i])||{}).n||'из базы'}</span><i>▾</i></button></div>
  <textarea data-cp="${i}" style="height:64px" placeholder="Aleksandr 'KaiR0N-' Anashkin / 32-34 +1.70% 78.1 72.5% 1.15"></textarea>
- <div class="r"><label class="b g" style="flex:1;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:12px">Фото<input type="file" accept="image/*" data-cf="${i}" hidden></label><button class="b g" data-cc="${i}" style="font-size:12px">Из буфера</button></div>
+ <div class="r"><label class="b g" style="flex:1;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:12px">Фото<input type="file" accept="image/*" data-cf="${i}" hidden></label><button class="b g" data-cc="${i}" style="font-size:12px">Из буфера</button>${rbBtn('photo_cmp'+i,'font-size:12px')}</div>
  <div class="r"><small>Масштаб</small><input type="range" min="100" max="300" value="${S['c_z'+i]}" data-cr="c_z${i}"></div><div class="r"><small>Сдвиг X</small><input type="range" min="-100" max="100" value="${S['c_x'+i]}" data-cr="c_x${i}"></div><div class="r"><small>Сдвиг Y</small><input type="range" min="-100" max="100" value="${S['c_y'+i]}" data-cr="c_y${i}"></div><div class="r"><small>Затемнение</small><input type="range" min="0" max="85" value="${S['c_d'+i]||0}" data-cr="c_d${i}"></div></div>`;
  $('fm').innerHTML=`<div class="r"><small>Строка 1</small><input data-cs="c_t1" value="${S.c_t1}"></div><div class="r"><small>Строка 2</small><input data-cs="c_t2" value="${S.c_t2}"></div><div class="r"><small>Подпись</small><input data-cs="c_sub" value="${S.c_sub}"></div>`+sl(1)+sl(2)+
  '<div class="mh" style="padding:0"><small style="flex:1.4">показатель</small><small>игрок 1</small><small>игрок 2</small></div>'+S.c_rows.map((r,i)=>`<div class="r"><input data-rw="${i}" data-f="l" value="${r.l}" style="flex:1.4 1 0;width:0"><input data-rw="${i}" data-f="a" value="${r.a}" style="flex:1 1 0;width:0;text-align:center"><input data-rw="${i}" data-f="b" value="${r.b}" style="flex:1 1 0;width:0;text-align:center"></div>`).join('');
@@ -455,7 +455,7 @@ function resForm(){const h=`<small style="display:block;margin-bottom:4px">Бы�
  <label class="ck"><input type="checkbox" id="rsp" ${S.r_sp!=='0'?'checked':''}><span>Логотип WINLINE</span></label>
  <div class="r"><small>Заголовок</small><input data-rs="r_t1" value="${S.r_t1}"></div><div class="r"><small>В плашке</small><input data-rs="r_t2" value="${S.r_t2}"></div><div class="r"><small>Турнир</small><input data-rs="r_tour" value="${S.r_tour}"></div>
  <div class="r"><label class="ck" style="margin:0;flex:1"><input type="checkbox" id="rtl" ${S.r_tl!=='0'?'checked':''}><span>Лого турнира</span></label><label class="b g" style="display:flex;align-items:center;cursor:pointer;font-size:12px">Заменить<input type="file" accept="image/*" id="rtf" hidden></label></div>
- <div class="r"><small>Фото</small><input type="file" accept="image/*" id="rph"></div>
+ <div class="r"><small>Фото</small><input type="file" accept="image/*" id="rph"></div><div class="r">${rbBtn('photo_res','flex:1')}</div>
  <div class="r"><small>Масштаб</small><input type="range" min="100" max="300" value="${S.zoom}" data-rr="zoom"></div><div class="r"><small>Сдвиг X</small><input type="range" min="-100" max="100" value="${S.px}" data-rr="px"></div><div class="r"><small>Сдвиг Y</small><input type="range" min="-100" max="100" value="${S.py}" data-rr="py"></div><div class="r"><small>Затемнение</small><input type="range" min="0" max="85" value="${S.dim||0}" data-rr="dim"></div>`+
  (S.r_rows.length?'<div class="mh"><small>тег</small><small>счёт</small><small>тег</small></div>':'')+S.r_rows.map((r,i)=>`<div class="mrow"><div class="r">${tpBtn(r.t1,i,1)}<button class="ico" data-sw="${i}" title="Поменять местами">⇄</button>${tpBtn(r.t2,i,2)}<button class="ico" data-del="${i}" title="Удалить">✕</button></div>
   <div class="r"><input class="sm" data-f="g1" data-i="${i}" value="${r.g1}" maxlength="3"><input class="sm" data-f="sc" data-i="${i}" value="${r.sc}" placeholder="2-1"><input class="sm" data-f="g2" data-i="${i}" value="${r.g2}" maxlength="3"></div></div>`).join('')+
@@ -614,7 +614,7 @@ function dotaForm(){dgFix();const D=S.dg,E=D.el,row=(k,n)=>`<div class="mrow"><d
  <div class="r"><small>Размер</small><input type="range" min="30" max="300" value="${Math.round(E[k].s*100)}" data-ds="${k}"></div>
  <div class="r"><small>X</small><input type="range" min="0" max="1000" value="${Math.round(E[k].fx*1000)}" data-dx="${k}"></div><div class="r" style="margin-bottom:0"><small>Y</small><input type="range" min="0" max="1000" value="${Math.round(E[k].fy*1000)}" data-dy="${k}"></div></div>`;
  $('fm').innerHTML=`<small style="display:block;margin-bottom:10px;line-height:1.5">Элементы можно таскать прямо на картинке пальцем или мышкой.</small>
- <div class="r"><small>Фото</small><input type="file" accept="image/*" id="dph"></div>
+ <div class="r"><small>Фото</small><input type="file" accept="image/*" id="dph"></div><div class="r">${rbBtn('photo_dota','flex:1')}</div>
  <div class="r"><small>Формат</small><select id="dfm">${[['auto','Как у фото'],['1:1','Квадрат 1:1'],['4:5','Пост 4:5'],['9:16','Сторис 9:16'],['16:9','Широкий 16:9']].map(([v,n])=>`<option value="${v}"${(D.fmt||'auto')==v?' selected':''}>${n}</option>`).join('')}</select></div>
  <div class="r"><small>Масштаб</small><input type="range" min="100" max="300" value="${S.zoom||100}" data-dp="zoom"></div><div class="r"><small>Сдвиг X</small><input type="range" min="-100" max="100" value="${S.px||0}" data-dp="px"></div><div class="r"><small>Сдвиг Y</small><input type="range" min="-100" max="100" value="${S.py||0}" data-dp="py"></div><div class="r"><small>Затемнение</small><input type="range" min="0" max="85" value="${S.dim||0}" data-dp="dim"></div>
  <small>Надпись (Tab — новая строка)</small><textarea id="dtt" style="height:70px">${D.title}</textarea>
@@ -657,7 +657,7 @@ let QK=1;try{QK=+localStorage.getItem('qk')||1}catch(_){}let CKs=1;
 function draw(){const [w,h]=TP[cur].dims?TP[cur].dims():[1080,TP[cur].h||1080],k=['krug','framev','wm'].includes(cur)?1:QK;CKs=k;if(cv.height!=h*k||cv.width!=w*k){cv.width=w*k;cv.height=h*k;cv.style.setProperty('--ar',w/h)}$('dim').textContent=w*k+' × '+h*k+' · PNG'+(k>1?' · 2K':'');X.save();X.setTransform(k,0,0,k,0,0);TP[cur].d();X.restore();grain();if(!HT)HT=setTimeout(commit,400)}
 function form(){const t=TP[cur];$('ttl').textContent=t.n;$('qd').style.display=['sched','sched2','sched3','sched4','veto','res','krug','frame','framev','wm','dota'].includes(cur)?'none':'';$('rs').style.display=t.custom?'none':'';if(t.custom){t.custom();return}$('fm').innerHTML=t.f.map(f=>{const v=S[f.k]??'';const lb=`<small>${f.l}</small>`;
  return f.t=='chk'?`<label class="ck"><input type="checkbox" data-ck="${f.k}" ${v!=='0'?'checked':''}><span>${f.l}</span></label>`:f.t=='img'?`<div class="r">${lb}<input type="file" accept="image/*" data-i="${f.k}"></div>`:f.t=='range'?`<div class="r">${lb}<input type="range" min="${f.a}" max="${f.b}" value="${v}" data-k="${f.k}"></div>`:f.t=='area'?`${lb}<textarea data-k="${f.k}">${v}</textarea>`:`<div class="r">${lb}<input data-k="${f.k}" value="${v}"></div>`}).join('');
- $('fm').insertAdjacentHTML('beforeend','<div class="r"><button class="b g" id="pb" style="flex:1">Вставить фото из буфера</button>'+(cur=='stats'?'<button class="b g" id="hb" style="flex:1">Фото с HLTV</button>':'')+'</div>');if($('hb'))$('hb').onclick=()=>autoPhoto('photo_stats',S.s_name,true);
+ $('fm').insertAdjacentHTML('beforeend','<div class="r"><button class="b g" id="pb" style="flex:1">Вставить фото из буфера</button>'+(t.f.some(f=>f.k=='photo')?rbBtn(PK(),'flex:1'):'')+(cur=='stats'?'<button class="b g" id="hb" style="flex:1">Фото с HLTV</button>':'')+'</div>');if($('hb'))$('hb').onclick=()=>autoPhoto('photo_stats',S.s_name,true);
  if(cur.startsWith('match')){$('fm').insertAdjacentHTML('afterbegin',`<div class="mrow" style="margin-bottom:12px"><div class="r" style="justify-content:space-between"><small style="width:auto">Фото победы команды</small><label class="ck" style="margin:0;font-size:12px"><input type="checkbox" id="wauto" ${S.m_wauto!=='0'?'checked':''}><span>авто</span></label></div><div id="wins" style="display:flex;gap:6px;flex-wrap:wrap"></div><div id="wadm"></div></div>`);adminForm();
   $('wauto').onchange=e=>{S.m_wauto=e.target.checked?'1':'0';if(e.target.checked)winAuto()};renderWins();winAuto()}
  if(cur=='stats'||cur=='cmp'){}
@@ -793,7 +793,7 @@ $('qa').onpaste=()=>setTimeout(()=>{if($('qa').value.trim().split('\n').length>0
 
 function prog(t,p){const e=$('prog');e.style.display='flex';$('pgt').textContent=t;const b=$('pgb');b.classList.toggle('ind',p==null);if(p!=null)b.style.width=p+'%'}
 let PGT=null;function progOff(t){clearTimeout(PGT);if(t){prog(t,100);PGT=setTimeout(()=>$('prog').style.display='none',1800)}else $('prog').style.display='none'}
-function photoLoad(f,cb){prog('Загружаю фото…',null);const i=new Image();i.onload=()=>{prog('Обрабатываю фото…',null);setTimeout(()=>{try{cb(i)}finally{draw();progOff()}},40)};i.onerror=()=>progOff('Не удалось открыть картинку');i.src=URL.createObjectURL(f)}
+function photoLoad(f,cb){Object.keys(im).filter(k=>k.endsWith('_orig')&&k.startsWith(PK())).forEach(k=>delete im[k]);prog('Загружаю фото…',null);const i=new Image();i.onload=()=>{prog('Обрабатываю фото…',null);setTimeout(()=>{try{cb(i)}finally{draw();progOff()}},40)};i.onerror=()=>progOff('Не удалось открыть картинку');i.src=URL.createObjectURL(f)}
 
 // ---- автофото с HLTV ----
 const PROX=[u=>u,u=>'https://api.allorigins.win/raw?url='+encodeURIComponent(u),u=>'https://corsproxy.io/?url='+encodeURIComponent(u),u=>'https://api.codetabs.com/v1/proxy?quest='+encodeURIComponent(u)],TPROX=[u=>'https://r.jina.ai/'+u,...PROX.slice(1)],AUTO={};
@@ -827,6 +827,20 @@ function winAuto(){if(S.m_wauto==='0')return;const cur_=AUTO.photo_match;if(im.p
 function renderWins(){const box=$('wins');if(!box)return;const wn=winner(),list=[];[wn,...(wn?[]:[S.m_t1,S.m_t2])].forEach(n=>{const w=winFor(n);if(w&&!list.includes(w))list.push(w)});
  box.innerHTML=list.length?list.map(w=>w.f.map(f=>`<img src="${winSrc(f)}" data-wf="${f}" title="${w.t}" style="width:84px;height:56px;object-fit:cover;border-radius:6px;cursor:pointer;border:2px solid ${AUTO.photo_match=='win:'+f?'var(--a)':'transparent'}">`).join('')).join(''):`<small style="width:auto">${wn?'Для '+wn+' фото победы пока нет':'Впиши счёт — покажу фото победителя'}</small>`;
  box.querySelectorAll('[data-wf]').forEach(e=>e.onclick=()=>setWin(e.dataset.wf))}
+
+// ---- вырезка фона (нейросеть прямо в браузере) ----
+let RMB=null;
+async function rmbgMod(){if(window.RMBG_MOD)return window.RMBG_MOD;if(!RMB)RMB=import('https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.4.5/+esm');return RMB}
+function toBlob(src){return new Promise(ok=>{const c=document.createElement('canvas'),w=src.naturalWidth||src.width,h=src.naturalHeight||src.height,k=Math.min(1,2048/Math.max(w,h));c.width=Math.round(w*k);c.height=Math.round(h*k);c.getContext('2d').drawImage(src,0,0,c.width,c.height);c.toBlob(ok,'image/png')})}
+async function rmbg(key,btn){const src=im[key];if(!src){prog('Сначала загрузи фото',100);setTimeout(progOff,1500);return}
+ if(im[key+'_orig']){im[key]=im[key+'_orig'];delete im[key+'_orig'];draw();rmbgBtns();return}
+ try{prog('Загружаю нейросеть для вырезки фона…',null);const m=await rmbgMod();
+  const out=await m.removeBackground(await toBlob(src),{progress:(k,c,t)=>{if(t)prog('Скачиваю модель (только первый раз)… '+Math.round(c/t*100)+'%',Math.round(c/t*100))},output:{format:'image/png',quality:1}});
+  prog('Вырезаю фон…',null);const i=new Image();i.onload=()=>{im[key+'_orig']=src;im[key]=i;draw();rmbgBtns();progOff('Фон убран ✓')};i.src=URL.createObjectURL(out)}
+ catch(e){console.error(e);progOff('Не получилось убрать фон: '+(e.message||e).toString().slice(0,80))}}
+function rmbgBtns(){document.querySelectorAll('[data-rb]').forEach(b=>{b.textContent=im[b.dataset.rb+'_orig']?'↺ Вернуть фон':'✂ Убрать фон'})}
+const rbBtn=(key,st='')=>`<button class="b g" data-rb="${key}" style="${st}">${im[key+'_orig']?'↺ Вернуть фон':'✂ Убрать фон'}</button>`;
+document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('[data-rb]');if(b){e.preventDefault();rmbg(b.dataset.rb==='@'?PK():b.dataset.rb,b)}});
 let WAT=null;
 // ---- мини-админка: свои фото победы (браузер + по желанию GitHub) ----
 const WURL={};const winSrc=f=>f.startsWith('idb:')?(WURL[f]||''):(WURL['wins:'+f]||'wins/'+f);
