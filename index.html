@@ -48,7 +48,7 @@ details details{background:var(--bg);margin:10px 0 0}
 #pop{position:fixed;z-index:50;width:280px;max-height:360px;display:none;flex-direction:column;background:var(--p2);border:1px solid var(--b2);border-radius:12px;box-shadow:0 16px 48px rgba(0,0,0,.6);padding:8px}
 #pop input{margin-bottom:6px;border-color:var(--a)}#pop .ls{overflow:auto}#pop .it{display:flex;align-items:center;gap:10px;padding:8px;border-radius:7px;cursor:pointer}#pop .it:hover,#pop .it.on{background:var(--b)}#pop .it img{width:22px;height:22px;object-fit:contain}
 </style></head><body><div id="pop"><input id="ps" placeholder="Найти команду…" autocomplete="off"><div class="ls" id="pl"></div></div>
-<div class="top"><div class="brand"><b>.cs2</b>creator</div><div style="display:flex;align-items:center;gap:2px;margin-left:auto"><button class="ico" id="un" title="Отменить (Ctrl+Z)">↶</button><button class="ico" id="re" title="Вернуть (Ctrl+Shift+Z)">↷</button><div class="ver" id="ver" style="margin-left:8px">v42</div></div></div>
+<div class="top"><div class="brand"><b>.cs2</b>creator</div><div style="display:flex;align-items:center;gap:2px;margin-left:auto"><button class="ico" id="un" title="Отменить (Ctrl+Z)">↶</button><button class="ico" id="re" title="Вернуть (Ctrl+Shift+Z)">↷</button><div class="ver" id="ver" style="margin-left:8px">v43</div></div></div>
 <div class="app">
 <div class="col"><h1>Шаблоны</h1><div id="tpls"></div></div>
 <div class="col">
@@ -590,36 +590,45 @@ S.dg??={title:'ДЕЛАЙ АПГРЕЙД',age:'18+',box:1,el:{age:{x:40,y:56,s:1
 let DGF="'Forum'",DGBB={};
 (function(){try{const d=localStorage.getItem('trajan_font');if(d){const b=Uint8Array.from(atob(d),c=>c.charCodeAt(0));const ff=new FontFace('TrajanU',b);ff.load().then(f=>{document.fonts.add(f);DGF="'TrajanU'";draw()}).catch(()=>{})}}catch(_){}})();
 document.fonts&&document.fonts.load("80px Forum","ДЕЛАЙ DOTA").then(()=>{if(cur=='dota')draw()}).catch(()=>{});
-function drawDota(){X.fillStyle='#1a1210';X.fillRect(0,0,1080,1080);photo();const E=S.dg.el;DGBB={};
- if(E.age.on&&S.dg.age){const z=26*E.age.s,f=`${z}px ${DGF},serif`;X.font=f;X.letterSpacing='0px';const w=X.measureText(S.dg.age).width;T(S.dg.age,E.age.x,E.age.y,f,'rgba(176,140,125,.75)','left',0,'middle');DGBB.age=[E.age.x,E.age.y-z*.5,w,z]}
- if(E.logo.on&&IMG.dglogo){const m=IMG.dglogo,w=183*E.logo.s,h=w*m.height/m.width;X.drawImage(m,E.logo.x-w/2,E.logo.y-h/2,w,h);DGBB.logo=[E.logo.x-w/2,E.logo.y-h/2,w,h]}
- if(E.title.on&&S.dg.title.trim()){const L=S.dg.title.toUpperCase().split('\n'),z0=112*E.title.s;let z=z0;const f=z=>`${z}px ${DGF},serif`,ls=z=>z*.06,wd=z=>Math.max(...L.map(l=>W(l,f(z),ls(z))));
-  while(z>16&&wd(z)>1000-80*E.title.s)z--;const tw=wd(z),lh=z*1.05,th=z*.72+(L.length-1)*lh,bw=tw+76*E.title.s,bh=th+66*E.title.s,bx=E.title.x-bw/2,by=E.title.y-bh/2;
+function dgDims(){const f=S.dg.fmt||'auto';let r=1;if(f=='auto'){const p=im.photo_dota;r=p?p.height/p.width:1;if(Math.abs(r-1)<.03)r=1;r=Math.min(2,Math.max(.5,r))}else{const [a,b]=f.split(':').map(Number);r=b/a}return r>=1?[1080,Math.round(1080*r/2)*2]:[Math.round(1080/r/2)*2,1080]}
+// координата 0..1 в «квадратных» единицах -> пиксели: края прилипают к краям, середина растягивается
+const dgMap=(f,L)=>f<=.25?f*1080:f>=.75?L-(1-f)*1080:270+(f-.25)/.5*(L-540);
+const dgInv=(p,L)=>p<=270?p/1080:p>=L-270?1-(L-p)/1080:.25+(p-270)/(L-540)*.5;
+function dgFix(){const E=S.dg.el;for(const k in E){const e=E[k];if(e.fx===undefined){e.fx=(e.x??540)/1080;e.fy=(e.y??540)/1080}}}
+function drawDota(){dgFix();const [Wd,Hd]=dgDims(),E=S.dg.el;X.fillStyle='#1a1210';X.fillRect(0,0,Wd,Hd);
+ const p=im.photo_dota;if(p){const z=(S.zoom||100)/100,s=Math.max(Wd/p.width,Hd/p.height)*z,w=p.width*s,h=p.height*s;X.drawImage(p,(Wd-w)/2+(S.px||0)*Wd/200,(Hd-h)/2+(S.py||0)*Hd/200,w,h);dimRect(0,0,Wd,Hd,S.dim)}
+ else{const g=X.createLinearGradient(0,0,Wd,Hd);g.addColorStop(0,'#555');g.addColorStop(1,'#222');X.fillStyle=g;X.fillRect(0,0,Wd,Hd)}
+ const P=k=>[dgMap(E[k].fx,Wd),dgMap(E[k].fy,Hd)];DGBB={};
+ if(E.age.on&&S.dg.age){const [x,y]=P('age'),z=26*E.age.s,f=`${z}px ${DGF},serif`;X.font=f;X.letterSpacing='0px';const w=X.measureText(S.dg.age).width;T(S.dg.age,x,y,f,'rgba(176,140,125,.75)','left',0,'middle');DGBB.age=[x,y-z*.5,w,z]}
+ if(E.logo.on&&IMG.dglogo){const [x,y]=P('logo'),m=IMG.dglogo,w=183*E.logo.s,h=w*m.height/m.width;X.drawImage(m,x-w/2,y-h/2,w,h);DGBB.logo=[x-w/2,y-h/2,w,h]}
+ if(E.title.on&&S.dg.title.trim()){const [x,y]=P('title'),L=S.dg.title.toUpperCase().split('\n');let z=112*E.title.s;const f=z=>`${z}px ${DGF},serif`,ls=z=>z*.06,wd=z=>Math.max(...L.map(l=>W(l,f(z),ls(z))));
+  while(z>16&&wd(z)>Wd-80-80*E.title.s)z--;const tw=wd(z),lh=z*1.05,th=z*.72+(L.length-1)*lh,bw=tw+76*E.title.s,bh=th+66*E.title.s,bx=x-bw/2,by=y-bh/2;
   if(S.dg.box){X.save();X.beginPath();X.roundRect(bx,by,bw,bh,8);X.fillStyle='rgba(255,240,235,.06)';X.fill();X.lineWidth=1.5;X.strokeStyle='rgba(255,235,225,.28)';X.stroke();X.restore()}
-  L.forEach((l,i)=>TT(l,E.title.x,E.title.y-th/2+z*.72+i*lh,f(z),'#f6f0ee','center',ls(z)));DGBB.title=[bx,by,bw,bh]}}
+  L.forEach((l,i)=>TT(l,x,y-th/2+z*.72+i*lh,f(z),'#f6f0ee','center',ls(z)));DGBB.title=[bx,by,bw,bh]}}
 // перетаскивание элементов пальцем/мышкой
 (function(){let drag=null;const pt=e=>{const r=cv.getBoundingClientRect();return[(e.clientX-r.left)*cv.width/r.width/CKs,(e.clientY-r.top)*cv.height/r.height/CKs]};
- cv.addEventListener('pointerdown',e=>{if(cur!='dota')return;const [x,y]=pt(e);for(const k of ['age','logo','title']){const b=DGBB[k];if(b&&x>=b[0]-12&&x<=b[0]+b[2]+12&&y>=b[1]-12&&y<=b[1]+b[3]+12){drag={k,x,y,ox:S.dg.el[k].x,oy:S.dg.el[k].y};cv.setPointerCapture(e.pointerId);e.preventDefault();return}}});
- cv.addEventListener('pointermove',e=>{if(!drag)return;const [x,y]=pt(e),el=S.dg.el[drag.k];el.x=Math.round(drag.ox+x-drag.x);el.y=Math.round(drag.oy+y-drag.y);draw()});
+ cv.addEventListener('pointerdown',e=>{if(cur!='dota')return;const [x,y]=pt(e);for(const k of ['age','logo','title']){const b=DGBB[k];if(b&&x>=b[0]-12&&x<=b[0]+b[2]+12&&y>=b[1]-12&&y<=b[1]+b[3]+12){const [Wd,Hd]=dgDims();drag={k,x,y,ox:dgMap(S.dg.el[k].fx,Wd),oy:dgMap(S.dg.el[k].fy,Hd),Wd,Hd};cv.setPointerCapture(e.pointerId);e.preventDefault();return}}});
+ cv.addEventListener('pointermove',e=>{if(!drag)return;const [x,y]=pt(e),el=S.dg.el[drag.k];el.fx=Math.min(1,Math.max(0,dgInv(drag.ox+x-drag.x,drag.Wd)));el.fy=Math.min(1,Math.max(0,dgInv(drag.oy+y-drag.y,drag.Hd)));draw()});
  const up=()=>{if(drag){drag=null;form()}};cv.addEventListener('pointerup',up);cv.addEventListener('pointercancel',up)})();
-function dotaForm(){const D=S.dg,E=D.el,row=(k,n)=>`<div class="mrow"><div class="r" style="justify-content:space-between"><label class="ck" style="margin:0"><input type="checkbox" data-don="${k}" ${E[k].on?'checked':''}><span>${n}</span></label><button class="ico" data-drs="${k}" title="Вернуть на место">↺</button></div>
+function dotaForm(){dgFix();const D=S.dg,E=D.el,row=(k,n)=>`<div class="mrow"><div class="r" style="justify-content:space-between"><label class="ck" style="margin:0"><input type="checkbox" data-don="${k}" ${E[k].on?'checked':''}><span>${n}</span></label><button class="ico" data-drs="${k}" title="Вернуть на место">↺</button></div>
  <div class="r"><small>Размер</small><input type="range" min="30" max="300" value="${Math.round(E[k].s*100)}" data-ds="${k}"></div>
- <div class="r"><small>X</small><input type="range" min="0" max="1080" value="${E[k].x}" data-dx="${k}"></div><div class="r" style="margin-bottom:0"><small>Y</small><input type="range" min="0" max="1080" value="${E[k].y}" data-dy="${k}"></div></div>`;
+ <div class="r"><small>X</small><input type="range" min="0" max="1000" value="${Math.round(E[k].fx*1000)}" data-dx="${k}"></div><div class="r" style="margin-bottom:0"><small>Y</small><input type="range" min="0" max="1000" value="${Math.round(E[k].fy*1000)}" data-dy="${k}"></div></div>`;
  $('fm').innerHTML=`<small style="display:block;margin-bottom:10px;line-height:1.5">Элементы можно таскать прямо на картинке пальцем или мышкой.</small>
  <div class="r"><small>Фото</small><input type="file" accept="image/*" id="dph"></div>
+ <div class="r"><small>Формат</small><select id="dfm">${[['auto','Как у фото'],['1:1','Квадрат 1:1'],['4:5','Пост 4:5'],['9:16','Сторис 9:16'],['16:9','Широкий 16:9']].map(([v,n])=>`<option value="${v}"${(D.fmt||'auto')==v?' selected':''}>${n}</option>`).join('')}</select></div>
  <div class="r"><small>Масштаб</small><input type="range" min="100" max="300" value="${S.zoom||100}" data-dp="zoom"></div><div class="r"><small>Сдвиг X</small><input type="range" min="-100" max="100" value="${S.px||0}" data-dp="px"></div><div class="r"><small>Сдвиг Y</small><input type="range" min="-100" max="100" value="${S.py||0}" data-dp="py"></div><div class="r"><small>Затемнение</small><input type="range" min="0" max="85" value="${S.dim||0}" data-dp="dim"></div>
  <small>Надпись (Tab — новая строка)</small><textarea id="dtt" style="height:70px">${D.title}</textarea>
  <label class="ck"><input type="checkbox" id="dbx" ${D.box?'checked':''}><span>Рамка под надписью</span></label>
  <div class="r"><small>Значок</small><input id="dag" value="${D.age}"></div>`+row('title','Надпись')+row('logo','Логотип DOTAGRADE')+row('age','Значок 18+')+
  `<div class="r"><label class="b g" style="flex:1;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:12px">${DGF.includes('TrajanU')?'✓ Trajan загружен — заменить':'Загрузить шрифт Trajan (.otf/.ttf)'}<input type="file" accept=".otf,.ttf,.woff,.woff2" id="dfn" hidden></label></div><small style="display:block;line-height:1.5">Сейчас ${DGF.includes('TrajanU')?'стоит твой Trajan':'стоит похожий бесплатный шрифт Forum'}. Trajan платный, поэтому встроить его не могу — загрузи свой файл один раз, он запомнится в браузере.</small>`;
- $('dph').onchange=e=>{const f=e.target.files[0];if(f)loadImg(f)};
+ $('dph').onchange=e=>{const f=e.target.files[0];if(f)loadImg(f)};$('dfm').onchange=e=>{D.fmt=e.target.value;draw()};
  $('fm').querySelectorAll('[data-dp]').forEach(e=>e.oninput=()=>{S[e.dataset.dp]=+e.value;draw()});
  $('dtt').oninput=e=>{D.title=e.target.value;draw()};$('dag').oninput=e=>{D.age=e.target.value;draw()};$('dbx').onchange=e=>{D.box=e.target.checked?1:0;draw()};
  $('fm').querySelectorAll('[data-don]').forEach(e=>e.onchange=()=>{E[e.dataset.don].on=e.checked?1:0;draw()});
  $('fm').querySelectorAll('[data-ds]').forEach(e=>e.oninput=()=>{E[e.dataset.ds].s=e.value/100;draw()});
- $('fm').querySelectorAll('[data-dx]').forEach(e=>e.oninput=()=>{E[e.dataset.dx].x=+e.value;draw()});
- $('fm').querySelectorAll('[data-dy]').forEach(e=>e.oninput=()=>{E[e.dataset.dy].y=+e.value;draw()});
- const DEF={age:{x:40,y:56,s:1},logo:{x:541,y:59,s:1},title:{x:540,y:969,s:1}};
+ $('fm').querySelectorAll('[data-dx]').forEach(e=>e.oninput=()=>{E[e.dataset.dx].fx=e.value/1000;draw()});
+ $('fm').querySelectorAll('[data-dy]').forEach(e=>e.oninput=()=>{E[e.dataset.dy].fy=e.value/1000;draw()});
+ const DEF={age:{fx:40/1080,fy:56/1080,s:1},logo:{fx:.5,fy:59/1080,s:1},title:{fx:.5,fy:969/1080,s:1}};
  $('fm').querySelectorAll('[data-drs]').forEach(b=>b.onclick=()=>{Object.assign(E[b.dataset.drs],DEF[b.dataset.drs]);dotaForm();draw()});
  $('dfn').onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{const buf=r.result;new FontFace('TrajanU',buf).load().then(ff=>{document.fonts.add(ff);DGF="'TrajanU'";try{let s='';const u=new Uint8Array(buf);for(let i=0;i<u.length;i+=8192)s+=String.fromCharCode.apply(null,u.subarray(i,i+8192));localStorage.setItem('trajan_font',btoa(s))}catch(_){}dotaForm();draw();progOff('Шрифт загружен ✓')}).catch(()=>progOff('Не получилось открыть шрифт'))};r.readAsArrayBuffer(f)}}
 
@@ -641,7 +650,7 @@ const TP={
  sched4:{n:'Финал',g:'Расписание',d:drawSched4,custom:schedForm,f:[]},
  veto:{n:'Map veto',d:drawVeto,custom:vetoForm,f:[]},
  krug:{n:'Кружок',d:drawKrug,custom:krForm,f:[]},
- dota:{n:'DOTAGRADE',g:'Dota',d:drawDota,custom:dotaForm,f:[]},
+ dota:{n:'DOTAGRADE',g:'Dota',d:drawDota,dims:dgDims,custom:dotaForm,f:[]},
  news:{n:'Новость',d:drawNews,f:[{k:'n_title',l:'Заголовок (строка с * — в плашке)',t:'area',d:'DLC\nБУДЕТ\n*В МАЕ?'},{k:'n_text',l:'Текст (*слово* — в плашке)',t:'area',d:'Жукоебы, *внимание!*\n\nНовости про DLC к Silksong появятся уже в этом месяце — пока DLC находится без точной даты выхода\n\nЭто мы точно *ждем*'},{k:'n_n1',l:'Меню 1',t:'text',d:'EXE    CS2    TOURNAMENTS'},{k:'n_n2',l:'Меню 2',t:'text',d:'GIVEAWAY    MEMES'},...PH]}};
 Object.values(TP).forEach(t=>t.f.forEach(f=>{if(f.d!==undefined)S[f.k]??=f.d}));
 let QK=1;try{QK=+localStorage.getItem('qk')||1}catch(_){}let CKs=1;
