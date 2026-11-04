@@ -53,7 +53,7 @@ details details{background:var(--bg);margin:10px 0 0}
 #pop{position:fixed;z-index:50;width:280px;max-height:360px;display:none;flex-direction:column;background:var(--p2);border:1px solid var(--b2);border-radius:12px;box-shadow:0 16px 48px rgba(0,0,0,.6);padding:8px}
 #pop input{margin-bottom:6px;border-color:var(--a)}#pop .ls{overflow:auto}#pop .it{display:flex;align-items:center;gap:10px;padding:8px;border-radius:7px;cursor:pointer}#pop .it:hover,#pop .it.on{background:var(--b)}#pop .it img{width:22px;height:22px;object-fit:contain}
 </style></head><body><div id="pop"><input id="ps" placeholder="Найти команду…" autocomplete="off"><div class="ls" id="pl"></div></div>
-<div class="top"><div class="brand"><b>.cs2</b>creator</div><div style="display:flex;align-items:center;gap:2px;margin-left:auto"><button class="ico" id="un" title="Отменить (Ctrl+Z)">↶</button><button class="ico" id="re" title="Вернуть (Ctrl+Shift+Z)">↷</button><div class="ver" id="ver" style="margin-left:8px">v49</div></div></div>
+<div class="top"><div class="brand"><b>.cs2</b>creator</div><div style="display:flex;align-items:center;gap:2px;margin-left:auto"><button class="ico" id="un" title="Отменить (Ctrl+Z)">↶</button><button class="ico" id="re" title="Вернуть (Ctrl+Shift+Z)">↷</button><div class="ver" id="ver" style="margin-left:8px">v50</div></div></div>
 <div class="app">
 <div class="col"><h1>Шаблоны</h1><div id="tpls"></div></div>
 <div class="col">
@@ -656,13 +656,12 @@ const TP={
  veto:{n:'Map veto',d:drawVeto,custom:vetoForm,f:[]},
  krug:{n:'Кружок',d:drawKrug,custom:krForm,f:[]},
  dota:{n:'DOTAGRADE',g:'Dota',d:drawDota,dims:dgDims,custom:dotaForm,f:[]},
- ai:{n:'AI-картинки',d:drawAI,dims:aiDims,custom:aiForm,nograin:1,f:[]},
  rmbg:{n:'Убрать фон',d:drawRmbg,dims:rmDims,custom:rmbgForm,nograin:1,f:[]},
  news:{n:'Новость',d:drawNews,f:[{k:'n_title',l:'Заголовок (строка с * — в плашке)',t:'area',d:'DLC\nБУДЕТ\n*В МАЕ?'},{k:'n_text',l:'Текст (*слово* — в плашке)',t:'area',d:'Жукоебы, *внимание!*\n\nНовости про DLC к Silksong появятся уже в этом месяце — пока DLC находится без точной даты выхода\n\nЭто мы точно *ждем*'},{k:'n_n1',l:'Меню 1',t:'text',d:'EXE    CS2    TOURNAMENTS'},{k:'n_n2',l:'Меню 2',t:'text',d:'GIVEAWAY    MEMES'},...PH]}};
 Object.values(TP).forEach(t=>t.f.forEach(f=>{if(f.d!==undefined)S[f.k]??=f.d}));
 let QK=1;try{QK=+localStorage.getItem('qk')||1}catch(_){}let CKs=1;
-function draw(){const [w,h]=TP[cur].dims?TP[cur].dims():[1080,TP[cur].h||1080],k=['krug','framev','wm','rmbg','ai'].includes(cur)?1:QK;CKs=k;if(cv.height!=h*k||cv.width!=w*k){cv.width=w*k;cv.height=h*k;cv.style.setProperty('--ar',w/h)}$('dim').textContent=w*k+' × '+h*k+' · PNG'+(k>1?' · 2K':'');cv.style.background=TP[cur].nograin?'repeating-conic-gradient(#2a2a2e 0 25%,#1c1c1f 0 50%) 0 0/24px 24px':'';X.save();X.setTransform(k,0,0,k,0,0);TP[cur].d();X.restore();if(!TP[cur].nograin)grain();if(!HT)HT=setTimeout(commit,400)}
-function form(){const t=TP[cur];$('ttl').textContent=((GROUPS.find(g=>g[1].includes(cur))||[])[0]?(GROUPS.find(g=>g[1].includes(cur))[0]+' · '):'')+(NAMES[cur]||t.n);$('qd').style.display=['sched','sched2','sched3','sched4','veto','res','krug','frame','framev','wm','dota','rmbg','ai'].includes(cur)?'none':'';$('rs').style.display=t.custom?'none':'';if(t.custom){t.custom();return}$('fm').innerHTML=t.f.map(f=>{const v=S[f.k]??'';const lb=`<small>${f.l}</small>`;
+function draw(){const [w,h]=TP[cur].dims?TP[cur].dims():[1080,TP[cur].h||1080],k=['krug','framev','wm','rmbg'].includes(cur)?1:QK;CKs=k;if(cv.height!=h*k||cv.width!=w*k){cv.width=w*k;cv.height=h*k;cv.style.setProperty('--ar',w/h)}$('dim').textContent=w*k+' × '+h*k+' · PNG'+(k>1?' · 2K':'');cv.style.background=TP[cur].nograin?'repeating-conic-gradient(#2a2a2e 0 25%,#1c1c1f 0 50%) 0 0/24px 24px':'';X.save();X.setTransform(k,0,0,k,0,0);TP[cur].d();X.restore();if(!TP[cur].nograin)grain();if(!HT)HT=setTimeout(commit,400)}
+function form(){const t=TP[cur];$('ttl').textContent=((GROUPS.find(g=>g[1].includes(cur))||[])[0]?(GROUPS.find(g=>g[1].includes(cur))[0]+' · '):'')+(NAMES[cur]||t.n);$('qd').style.display=['sched','sched2','sched3','sched4','veto','res','krug','frame','framev','wm','dota','rmbg'].includes(cur)?'none':'';$('rs').style.display=t.custom?'none':'';if(t.custom){t.custom();return}$('fm').innerHTML=t.f.map(f=>{const v=S[f.k]??'';const lb=`<small>${f.l}</small>`;
  return f.t=='chk'?`<label class="ck"><input type="checkbox" data-ck="${f.k}" ${v!=='0'?'checked':''}><span>${f.l}</span></label>`:f.t=='img'?`<div class="r">${lb}<input type="file" accept="image/*" data-i="${f.k}"></div>`:f.t=='range'?`<div class="r">${lb}<input type="range" min="${f.a}" max="${f.b}" value="${v}" data-k="${f.k}"></div>`:f.t=='area'?`${lb}<textarea data-k="${f.k}">${v}</textarea>`:`<div class="r">${lb}<input data-k="${f.k}" value="${v}"></div>`}).join('');
  $('fm').insertAdjacentHTML('beforeend','<div class="r"><button class="b g" id="pb" style="flex:1">Вставить фото из буфера</button>'+(cur=='stats'?'<button class="b g" id="hb" style="flex:1">Фото с HLTV</button>':'')+'</div>');if($('hb'))$('hb').onclick=()=>autoPhoto('photo_stats',S.s_name,true);
  if(cur.startsWith('match')){$('fm').insertAdjacentHTML('afterbegin',`<div class="mrow" style="margin-bottom:12px"><div class="r" style="justify-content:space-between"><small style="width:auto">Фото победы команды</small><label class="ck" style="margin:0;font-size:12px"><input type="checkbox" id="wauto" ${S.m_wauto!=='0'?'checked':''}><span>авто</span></label></div><div id="wins" style="display:flex;gap:6px;flex-wrap:wrap"></div><div id="wadm"></div></div>`);adminForm();
@@ -674,8 +673,8 @@ function form(){const t=TP[cur];$('ttl').textContent=((GROUPS.find(g=>g[1].inclu
  $('fm').querySelectorAll('[data-ck]').forEach(e=>e.onchange=()=>{S[e.dataset.ck]=e.checked?'1':'0';draw()});
  $('fm').querySelectorAll('[data-k]').forEach(e=>e.oninput=()=>{S[e.dataset.k]=e.value;if(e.dataset.k=='s_name')autoSoon('photo_stats',e.value);if(/^m_(score|t1|t2)$/.test(e.dataset.k)){clearTimeout(WAT);WAT=setTimeout(()=>{renderWins();winAuto()},700)}const lk={s_team:'logo',m_t1:'m_l1',m_t2:'m_l2'}[e.dataset.k];if(lk)logoFor(e.value,lk);draw()});
  $('fm').querySelectorAll('[data-i]').forEach(e=>e.onchange=()=>{const f=e.files[0];if(!f)return;const key=e.dataset.i=='photo'?PK():e.dataset.i;AUTO[key]=null;AUTO['_'+key]=null;photoLoad(f,i=>{im[key]=e.dataset.i=='photo'?enhance(i,[]):i});const tm={logo:S.s_team,m_l1:S.m_t1,m_l2:S.m_t2}[e.dataset.i];if(tm!==undefined&&tm.trim()){const fr=new FileReader();fr.onload=()=>{try{localStorage.setItem(LK(tm),fr.result)}catch(_){}};fr.readAsDataURL(f)}})}
-const GROUPS=[['Цитаты',['quote','quote2']],['Игроки',['stats','cmp']],['Итоги',['match','match2','match3','res']],['Расписание',['sched','sched2','sched3','sched4','veto']],['Видео',['krug','framev','wm']],['Посты',['news','frame']],['Dota',['dota']],['Инструменты',['ai','rmbg']]];
-const NAMES={quote:'Классика',quote2:'С плашкой',stats:'Статистика игрока',cmp:'Сравнение игроков',match:'Классика',match2:'Вертикальный',match3:'По картам',res:'Результаты дня',sched:'Вертикальное',sched2:'Квадрат',sched3:'2 матча',sched4:'Финал',veto:'Map veto',krug:'Кружок',framev:'Рамка',wm:'С логотипом .exe',news:'Новость',frame:'Рамка для фото',dota:'DOTAGRADE',rmbg:'Убрать фон',ai:'AI-картинки'};
+const GROUPS=[['Цитаты',['quote','quote2']],['Игроки',['stats','cmp']],['Итоги',['match','match2','match3','res']],['Расписание',['sched','sched2','sched3','sched4','veto']],['Видео',['krug','framev','wm']],['Посты',['news','frame']],['Dota',['dota']],['Инструменты',['rmbg']]];
+const NAMES={quote:'Классика',quote2:'С плашкой',stats:'Статистика игрока',cmp:'Сравнение игроков',match:'Классика',match2:'Вертикальный',match3:'По картам',res:'Результаты дня',sched:'Вертикальное',sched2:'Квадрат',sched3:'2 матча',sched4:'Финал',veto:'Map veto',krug:'Кружок',framev:'Рамка',wm:'С логотипом .exe',news:'Новость',frame:'Рамка для фото',dota:'DOTAGRADE',rmbg:'Убрать фон'};
 let GOPEN={};try{GOPEN=JSON.parse(localStorage.getItem('gopen')||'{}')}catch(_){}
 function pick(k){ST[cur]={zoom:S.zoom,px:S.px,py:S.py,dim:S.dim};cur=k;Object.assign(S,ST[k]||{zoom:100,px:0,py:0,dim:0});nav();form();draw()}
 function nav(){const T_=$('tpls');T_.innerHTML='';const cg=(GROUPS.find(g=>g[1].includes(cur))||[])[0];if(cg&&GOPEN[cg]===undefined)GOPEN[cg]=1;
@@ -914,48 +913,6 @@ function rmbgForm(){const has=!!RM.o,md=(m,t)=>`<button class="b ${RM.mode==m?''
  $('rmt').oninput=e=>RM.tol=+e.target.value;$('rmb').oninput=e=>RM.br=+e.target.value;$('rmfe').oninput=e=>{RM.fe=+e.target.value;draw()};
  $('rmu').onclick=rmUndo;$('rmr').onclick=()=>{rmPush();const g=RM.m.getContext('2d');g.globalCompositeOperation='source-over';g.fillStyle='#fff';g.fillRect(0,0,RM.w,RM.h);draw()}}
 
-// ---- AI-картинки через fal.ai (ключ хранится только в этом браузере) ----
-const AIM=[['poll:flux','Бесплатно — Flux (Pollinations)'],['poll:turbo','Бесплатно — Turbo, быстрее (Pollinations)'],['bytedance/seedream/v5/pro/text-to-image','Seedream 5.0 Pro — по тексту'],['bytedance/seedream/v5/pro/edit','Seedream 5.0 Pro — правка по фото']];
-const AI={img:null,refs:[],busy:false};
-const PSZ={auto_2K:[1024,1024],square_hd:[1024,1024],portrait_4_3:[864,1152],portrait_16_9:[768,1344],landscape_16_9:[1344,768]};
-async function aiFree(model,prompt,size){const [w,h]=PSZ[size]||[1024,1024],u='https://image.pollinations.ai/prompt/'+encodeURIComponent(prompt)+`?width=${w}&height=${h}&model=${model}&nologo=true&seed=${Math.floor(Math.random()*1e9)}`;
- AI.busy=true;draw();prog('Генерирую бесплатно… обычно 10–60 секунд',null);
- const fin=i=>{AI.img=i;AI.busy=false;draw();aiForm();progOff('Готово ✓')},fail=e=>{AI.busy=false;draw();progOff('Не вышло: '+String(e&&e.message||e||'сервис занят, попробуй ещё раз').slice(0,120))};
- try{const c=new AbortController(),t=setTimeout(()=>c.abort(),120000),r=await fetch(u,{signal:c.signal});clearTimeout(t);if(!r.ok)throw new Error('сервис ответил '+r.status+(r.status==429?' — слишком часто, подожди минуту':''));const b=await r.blob();if(!b.type.startsWith('image'))throw new Error('сервис занят, попробуй ещё раз');const i=new Image();i.onload=()=>fin(i);i.src=URL.createObjectURL(b)}
- catch(e){if(e.name==='TypeError'){const i=new Image();i.crossOrigin='anonymous';i.onload=()=>fin(i);i.onerror=()=>fail('сервис недоступен');i.src=u}else fail(e)}}
-function aiDims(){const p=AI.img;if(!p)return[1080,1080];const w=p.naturalWidth,h=p.naturalHeight,k=Math.min(1,2048/Math.max(w,h));return[Math.round(w*k),Math.round(h*k)]}
-function drawAI(){const [w,h]=aiDims();X.fillStyle='#141416';X.fillRect(0,0,w,h);if(AI.img)X.drawImage(AI.img,0,0,w,h);else{X.fillStyle='rgba(255,255,255,.35)';X.font=`500 28px ${MONO}`;X.textAlign='center';X.textBaseline='middle';X.fillText(AI.busy?'Генерирую…':'Напиши запрос и нажми «Сгенерировать»',540,540)}}
-const fileURL=f=>new Promise(r=>{const fr=new FileReader();fr.onload=()=>r(fr.result);fr.readAsDataURL(f)});
-async function aiGo(){const key=(localStorage.getItem('fal_key')||'').trim(),model=($('aim').value==='custom'?$('aic').value:$('aim').value).trim(),prompt=$('aip').value.trim();
- if(!prompt){$('aip').focus();return}if(model.startsWith('poll:'))return aiFree(model.slice(5),prompt,$('ais').value);
- if(!key){$('details#aikd')&&0;progOff('Для Seedream нужен ключ fal.ai (внизу)');return}
- const edit=/edit/.test(model);if(edit&&!AI.refs.length){progOff('Для правки добавь фото');return}
- const body={prompt,num_images:1,image_size:$('ais').value};if(edit)body.image_urls=AI.refs;
- AI.busy=true;draw();prog('Генерирую… обычно 10–40 секунд',null);
- try{const h={Authorization:'Key '+key,'Content-Type':'application/json'};
-  let r=await fetch('https://queue.fal.run/'+model,{method:'POST',headers:h,body:JSON.stringify(body)});let j=await r.json();if(!r.ok)throw new Error(j.detail?JSON.stringify(j.detail).slice(0,120):r.status);
-  const su=j.status_url,ru=j.response_url;for(let i=0;i<180;i++){await new Promise(z=>setTimeout(z,2000));const st=await (await fetch(su,{headers:h})).json();if(st.status==='COMPLETED')break;if(st.status==='FAILED'||st.error)throw new Error(st.error||'ошибка');prog('Генерирую… '+(st.queue_position?'очередь '+st.queue_position:(i*2)+' с'),null)}
-  r=await fetch(ru,{headers:h});j=await r.json();const url=j.images&&j.images[0]&&j.images[0].url;if(!url)throw new Error(JSON.stringify(j).slice(0,120));
-  const b=await (await fetch(url)).blob(),i=new Image();i.onload=()=>{AI.img=i;AI.busy=false;draw();aiForm();progOff('Готово ✓')};i.src=URL.createObjectURL(b)}
- catch(e){AI.busy=false;draw();progOff('Не вышло: '+String(e.message||e).slice(0,120))}}
-function aiForm(){const key=localStorage.getItem('fal_key')||'',sel=localStorage.getItem('fal_model')||AIM[0][0],isC=!AIM.some(m=>m[0]==sel);
- const tpl=Object.keys(TP).filter(k=>TP[k].f.some(f=>f.k=='photo')||['res','dota','cmp'].includes(k));
- $('fm').innerHTML=`<small style="display:block;margin-bottom:6px">Модель</small><div class="r"><select id="aim">${AIM.map(([v,n])=>`<option value="${v}"${v==sel?' selected':''}>${n}</option>`).join('')}<option value="custom"${isC?' selected':''}>Другая модель fal.ai…</option></select></div>
- <div class="r" id="aicr" style="${isC?'':'display:none'}"><input id="aic" placeholder="например fal-ai/flux-pro/v1.1" value="${isC?sel:''}"></div>
- <small>Запрос (лучше по-английски)</small><textarea id="aip" style="height:90px" placeholder="esports player celebrating on stage, dramatic orange light, cinematic">${AI.prompt||''}</textarea>
- <div class="r"><small>Размер</small><select id="ais">${[['auto_2K','Авто 2K'],['square_hd','Квадрат'],['portrait_4_3','Портрет 3:4'],['portrait_16_9','Сторис 9:16'],['landscape_16_9','Широкий 16:9']].map(([v,n])=>`<option value="${v}"${(AI.size||'auto_2K')==v?' selected':''}>${n}</option>`).join('')}</select></div>
- <div id="aiedit" style="${/edit/.test(isC?sel:sel)?'':'display:none'}"><label class="b g" style="width:100%;display:flex;align-items:center;justify-content:center;cursor:pointer;margin-bottom:6px">Добавить фото для правки (${AI.refs.length}/10)<input type="file" accept="image/*" multiple id="air" hidden></label>${AI.refs.length?`<div class="r" style="flex-wrap:wrap">${AI.refs.map((u,i)=>`<img src="${u}" data-ard="${i}" title="Убрать" style="width:52px;height:52px;object-fit:cover;border-radius:6px;cursor:pointer">`).join('')}</div>`:''}</div>
- <button class="b" id="aigo" style="width:100%;margin-bottom:10px">✨ Сгенерировать</button>
- ${AI.img?`<div class="r"><select id="ait">${tpl.map(k=>`<option value="${k}">${(GROUPS.find(g=>g[1].includes(k))||[''])[0]} · ${NAMES[k]||TP[k].n}</option>`).join('')}</select><button class="b g" id="aiu">В шаблон</button></div>`:''}
- <details style="margin-top:6px"><summary>Ключ fal.ai (для платных моделей)</summary><div class="in"><div class="r"><input id="aik" type="password" placeholder="ключ fal.ai" value="${key}" autocomplete="off"></div><small style="display:block;line-height:1.5">Ключ: fal.ai → Dashboard → Keys. Хранится только в этом браузере, в код сайта не попадает. Нужен только для Seedream и других моделей fal.ai — они платные (Seedream 5.0 Pro — от ~$0.07 за картинку). Бесплатные модели работают без ключа.</small></div></details>`;
- $('aim').onchange=e=>{const v=e.target.value;$('aicr').style.display=v=='custom'?'':'none';if(v!='custom')localStorage.setItem('fal_model',v);$('aiedit').style.display=/edit/.test(v=='custom'?$('aic').value:v)?'':'none'};
- $('aic').oninput=e=>{localStorage.setItem('fal_model',e.target.value.trim());$('aiedit').style.display=/edit/.test(e.target.value)?'':'none'};
- $('aip').oninput=e=>AI.prompt=e.target.value;$('ais').onchange=e=>AI.size=e.target.value;
- $('aik').onchange=e=>localStorage.setItem('fal_key',e.target.value.trim());
- $('air').onchange=async e=>{for(const f of [...e.target.files].slice(0,10-AI.refs.length)){const i=await new Promise(r=>{const im_=new Image();im_.onload=()=>r(im_);im_.src=URL.createObjectURL(f)});const c=document.createElement('canvas'),k=Math.min(1,1600/Math.max(i.width,i.height));c.width=i.width*k;c.height=i.height*k;c.getContext('2d').drawImage(i,0,0,c.width,c.height);AI.refs.push(c.toDataURL('image/jpeg',.9))}aiForm()};
- $('fm').querySelectorAll('[data-ard]').forEach(e=>e.onclick=()=>{AI.refs.splice(+e.dataset.ard,1);aiForm()});
- $('aigo').onclick=aiGo;
- if($('aiu'))$('aiu').onclick=()=>{const k=$('ait').value,key=k=='cmp'?'photo_cmp'+(S.c_slot||1):'photo_'+(k.startsWith('match')?'match':k.startsWith('quote')?'quote':k);im[key]=AI.img;if(k=='rmbg')rmSet(AI.img);pick(k)}}
 let WAT=null;
 // ---- мини-админка: свои фото победы (браузер + по желанию GitHub) ----
 const WURL={};const winSrc=f=>f.startsWith('idb:')?(WURL[f]||''):(WURL['wins:'+f]||'wins/'+f);
