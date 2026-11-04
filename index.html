@@ -53,7 +53,7 @@ details details{background:var(--bg);margin:10px 0 0}
 #pop{position:fixed;z-index:50;width:280px;max-height:360px;display:none;flex-direction:column;background:var(--p2);border:1px solid var(--b2);border-radius:12px;box-shadow:0 16px 48px rgba(0,0,0,.6);padding:8px}
 #pop input{margin-bottom:6px;border-color:var(--a)}#pop .ls{overflow:auto}#pop .it{display:flex;align-items:center;gap:10px;padding:8px;border-radius:7px;cursor:pointer}#pop .it:hover,#pop .it.on{background:var(--b)}#pop .it img{width:22px;height:22px;object-fit:contain}
 </style></head><body><div id="pop"><input id="ps" placeholder="Найти команду…" autocomplete="off"><div class="ls" id="pl"></div></div>
-<div class="top"><div class="brand"><b>.cs2</b>creator</div><div style="display:flex;align-items:center;gap:2px;margin-left:auto"><button class="ico" id="un" title="Отменить (Ctrl+Z)">↶</button><button class="ico" id="re" title="Вернуть (Ctrl+Shift+Z)">↷</button><div class="ver" id="ver" style="margin-left:8px">v56</div></div></div>
+<div class="top"><div class="brand"><b>.cs2</b>creator</div><div style="display:flex;align-items:center;gap:2px;margin-left:auto"><button class="ico" id="un" title="Отменить (Ctrl+Z)">↶</button><button class="ico" id="re" title="Вернуть (Ctrl+Shift+Z)">↷</button><div class="ver" id="ver" style="margin-left:8px">v57</div></div></div>
 <div class="app">
 <div class="col"><h1>Шаблоны</h1><div id="tpls"></div></div>
 <div class="col">
@@ -830,6 +830,87 @@ function numForm(){const A=ACT(),p=findPlayer(A.np);$('fm').innerHTML=actTop(1)+
  actTopBind(numForm);$('nqq').oninput=e=>{A.nq=e.target.value;draw()};$('nan').oninput=e=>{A.nans=e.target.value;draw()};$('nno').oninput=e=>{A.nnote=e.target.value;draw()};
  $('npk').onclick=()=>openPick($('npk'),p=>{if(p){A.np=p.n.toUpperCase();numForm();draw()}},'players');$('npx').onclick=()=>{A.np='';numForm();draw()}}
 
+// ---- АКТИВНОСТИ 4 (10 штук) ----
+Object.assign(S.act,Object.assign({sq:'ZYWOO',sstats:'K/D 1.42\nADR 91.3\nKAST 76%\nRATING 1.38',br:['Vitality','Team Spirit','MOUZ','NAVI'],brt:'ПЛЕЙ-ОФФ MAJOR',rb:'🐐👑🏆',rbc:'ИГРОК',rba:'ZYWOO',
+ od:['NAVI','Vitality','FURIA','Team Spirit'],odi:2,odr:'Единственная команда не из Европы',sdq:'Впиши сюда цитату игрока',sdp:'DONK',rs:'DONK',rst:'ИГРУ DONK НА ТУРНИРЕ',rkind:'p',rteam:'Team Spirit',
+ mv:['DONK','ZYWOO','ROPZ','MAGNOJEZ'],mvt:'PGL MASTERS BUCHAREST 2026',fct:'Впиши интересный факт об игроке или команде',fp:'',fe:'🤯',ha:'DONK',hb:'ZYWOO',hs:'RATING ЗА ТУРНИР',hva:'1.31',hvb:'1.27',
+ qq:'Кто выиграл PGL Major Copenhagen 2024?',qo:['NAVI','FaZe','Vitality','G2'],qi:0},S.act));
+const T0=()=>AF()?300:380,KC=n=>n+'️⃣';
+function silC(img){const c=document.createElement('canvas');c.width=img.width;c.height=img.height;const g=c.getContext('2d');g.drawImage(img,0,0);g.globalCompositeOperation='source-in';g.fillStyle=AF()?'#0b0605':'#f79400';g.fillRect(0,0,c.width,c.height);return c}
+function phDraw(img,cx,bot,mw,mh,sil){if(!img)return 0;const k=Math.min(mw/img.width,mh/img.height),w=img.width*k,h=img.height*k,src=sil?silC(img):img;if(sil&&AF()){X.save();X.shadowColor='rgba(255,110,50,.6)';X.shadowBlur=50;X.drawImage(src,cx-w/2,bot-h,w,h);X.restore()}else X.drawImage(src,cx-w/2,bot-h,w,h);return h}
+function nickP(nm,cx,y,mw,sz){nm=(nm||'').toUpperCase();if(!nm)return;if(AF()){let z=sz*.75;const f=z=>`${z}px ${DGF},serif`;while(z>14&&W(nm,f(z),z*.05)>mw)z--;const w=W(nm,f(z),z*.05)+36,h=z+26;X.save();X.beginPath();X.roundRect(cx-w/2,y-h/2,w,h,6);X.fillStyle='rgba(20,8,6,.6)';X.fill();X.strokeStyle='rgba(255,235,225,.3)';X.lineWidth=1.5;X.stroke();X.restore();TT(nm,cx,y+z*.34,f(z),'#f6f0ee','center',z*.05)}
+ else{const z=fitS(nm,"'Druk'",sz,mw,-.03),w=W(nm,`${z}px 'Druk'`,-.03*z)+30;X.fillStyle='#0a0a10';X.fillRect(cx-w/2,y-z*.48,w,z*.96);TT(nm,cx,y+z*.36,`${z}px 'Druk'`,'#f5f5f5','center',-.03*z)}}
+function boxR(x,y,w,h,hl){X.save();X.beginPath();X.roundRect(x,y,w,h,12);X.fillStyle=hl?(AF()?'rgba(40,140,80,.55)':'#1f9d55'):AF()?'rgba(20,8,6,.5)':'#191919';X.fill();if(AF()||hl){X.strokeStyle=hl?'#3ad07a':'rgba(255,235,225,.25)';X.lineWidth=hl?4:1.5;X.stroke()}X.restore()}
+function teamLogo(n,cx,cy,sz){const t=findTeam(n),i=t&&t.img;if(!i||!i.width)return;const s=Math.min(sz/i.width,sz/i.height),w=i.width*s,h=i.height*s;X.drawImage(whiteLogo(i),cx-w/2,cy-h/2,w,h)}
+const tName=n=>{const t=findTeam(n);return((t&&t.n!='TBD'?short(t.n):n)||'').toUpperCase()};
+const segE=s=>[...new Intl.Segmenter().segment(s||'')].map(x=>x.segment).filter(x=>x.trim());
+function txtFit(t,x,y,max,size,col,al='center'){t=(t||'').toUpperCase();if(AF()){let z=size*.8;const f=z=>`${z}px ${DGF},serif`;while(z>12&&W(t,f(z),z*.05)>max)z--;TT(t,x,y,f(z),col||'#f6f0ee',al,z*.05)}else{const z=fitS(t,"'Druk'",size,max,-.03);TT(t,x,y,`${z}px 'Druk'`,col||'#f5f5f5',al,-.03*z)}}
+function qBox(L,x,y,w,lh,f,ls){const d=AF(),bh=(L.length-1)*lh+110;X.save();X.beginPath();X.roundRect(x,y,w,bh,14);X.fillStyle=d?'rgba(20,8,6,.5)':'#f79400';X.fill();if(d){X.strokeStyle='rgba(255,235,225,.3)';X.lineWidth=1.5;X.stroke()}X.restore();L.forEach((l,i)=>TT(l,x+w/2,y+68+i*lh,f,d?'#f6f0ee':'#111','center',ls));return bh}
+const QF=()=>AF()?[`40px ${DGF},serif`,1]:[`500 38px ${MONO}`,-1.4];
+const pBtn=(id,n)=>{const p=findPlayer(n);return `<button class="tp" id="${id}"><span>${p?p.n+' · '+p.t:(n||'Выбрать игрока')}</span><i>▾</i></button>`};
+const tBtn=(id,n)=>{const t=findTeam(n);return `<button class="tp" id="${id}">${t?`<img src="${t.l}">`:''}<span>${t?t.n:(n||'Команда')}</span><i>▾</i></button>`};
+function bindP(id,cb){const b=$(id);if(b)b.onclick=()=>openPick(b,p=>{if(p){cb(p.n.toUpperCase());form();draw()}},'players')}
+function bindT(id,cb){const b=$(id);if(b)b.onclick=()=>openPick(b,t=>{if(t){cb(t.n);form();draw()}})}
+function bindIn(id,cb){const e=$(id);if(e)e.oninput=()=>{cb(e.value);draw()}}
+// 12. Чья статистика?
+function drawStatQ(){const A=ACT(),q=A.mode=='q';actBg();actHead(q?'ЧЬЯ СТАТИСТИКА?':'ПРАВИЛЬНЫЙ ОТВЕТ',q?'ПИШИ НИК В КОММЕНТАРИЯХ':'');const t0=T0();phDraw(pimg(A.sq),300,960,440,960-t0-20,q);
+ const L=(A.sstats||'').split('\n').map(l=>l.trim()).filter(Boolean).slice(0,5),rh=Math.min(120,(940-t0)/Math.max(1,L.length));
+ L.forEach((l,i)=>{const m=l.match(/^(.*?)\s+(\S+)$/)||[0,l,''],y=t0+20+i*rh;boxR(570,y,440,rh-16);actMono(m[1].toUpperCase(),600,y+(rh-16)/2+9,24,'rgba(255,255,255,.75)','left');actText(m[2],985,y+(rh-16)/2+(AF()?16:24),AF()?52:64,AF()?'#f6f0ee':'#f79400','right')});
+ if(!q)nickP(A.sq,300,905,440,90);actFoot('')}
+function statqForm(){const A=ACT();$('fm').innerHTML=actTop(1)+`<div class="r"><small>Игрок</small>${pBtn('sqp',A.sq)}</div><small>Статистика (показатель и число, по строке)</small><textarea id="sqs" style="height:110px">${A.sstats}</textarea><small style="display:block;line-height:1.5">В вопросе — силуэт игрока, в ответе — фото и ник.</small>`;actTopBind(statqForm);bindP('sqp',v=>A.sq=v);bindIn('sqs',v=>A.sstats=v)}
+// 13. Сетка-прогноз
+function drawBrk(){const A=ACT(),B=A.br;actBg();actHead('СДЕЛАЙ ПРОГНОЗ',(A.brt||'').toUpperCase());const t0=T0(),bh=110,bw=260,y0=t0+10,ys=[y0,y0+bh+18,y0+2*bh+62,y0+3*bh+80],x1=80,x2=430,x3=770,w3=240,mid=[(ys[0]+ys[1]+bh)/2,(ys[2]+ys[3]+bh)/2],fy=(mid[0]+mid[1])/2,qc=AF()?'rgba(255,220,205,.7)':'#f79400';
+ X.strokeStyle=AF()?'rgba(255,235,225,.35)':'#f79400';X.lineWidth=4;
+ ys.forEach((y,i)=>{boxR(x1,y,bw,bh);teamLogo(B[i],x1+58,y+bh/2,68);txtFit(tName(B[i]),x1+108,y+bh/2+(AF()?13:18),140,48,null,'left');X.beginPath();X.moveTo(x1+bw,y+bh/2);X.lineTo(x2-24,y+bh/2);X.lineTo(x2-24,mid[i>>1]);X.lineTo(x2,mid[i>>1]);X.stroke()});
+ mid.forEach(m=>{boxR(x2,m-bh/2,bw,bh);actText('?',x2+bw/2,m+(AF()?20:30),AF()?70:84,qc);X.beginPath();X.moveTo(x2+bw,m);X.lineTo(x3-24,m);X.lineTo(x3-24,fy);X.lineTo(x3,fy);X.stroke()});
+ boxR(x3,fy-bh/2,w3,bh);actText('?',x3+w3/2,fy+(AF()?20:30),AF()?70:84,qc);drawEmo('🏆',x3+w3/2,fy-bh/2-62,100);actFoot('ПИШИ ПРОГНОЗ В КОММЕНТАРИЯХ')}
+function brkForm(){const A=ACT();$('fm').innerHTML=actTop(0)+`<div class="r"><small>Подпись</small><input id="brt" value="${A.brt}"></div>`+[0,1,2,3].map(i=>`<div class="r"><small>${i<2?'1/2 · пара 1':'1/2 · пара 2'}</small>${tBtn('brb'+i,A.br[i])}</div>`).join('');actTopBind(brkForm);bindIn('brt',v=>A.brt=v);[0,1,2,3].forEach(i=>bindT('brb'+i,v=>A.br[i]=v))}
+// 14. Угадай по эмодзи
+function drawRebus(){const A=ACT(),q=A.mode=='q';actBg();actHead('УГАДАЙ ПО ЭМОДЗИ',q?((A.rbc||'').toUpperCase()+' · ОТВЕТ В КОММЕНТАРИЯХ'):'ПРАВИЛЬНЫЙ ОТВЕТ');const E=segE(A.rb).slice(0,8),t0=T0(),n=E.length,per=n>4?Math.ceil(n/2):Math.max(1,n),rows=n>4?2:1;
+ let sz=Math.min(200,880/per-20);if(!q)sz=Math.min(sz,150);const cy0=q?(t0+(950-t0)/2-(rows-1)*(sz+30)/2):(t0+sz/2+30);
+ E.forEach((e,i)=>{const r=Math.floor(i/per),c=i%per,cnt=r?n-per:per,cx=540+(c-(cnt-1)/2)*(sz+20),cy=cy0+r*(sz+30);boxR(cx-sz/2-6,cy-sz/2-6,sz+12,sz+12);drawEmo(e,cx,cy,sz*.8)});
+ if(!q)nickP(A.rba,540,870,880,110);actFoot('')}
+function rebusForm(){const A=ACT();$('fm').innerHTML=actTop(1)+`<div class="r"><small>Что угадать</small><input id="rbc" value="${A.rbc}" placeholder="ИГРОК / КОМАНДА / КАРТА"></div><small>Эмодзи (до 8)</small><textarea id="rbe" style="height:56px">${A.rb}</textarea>${emoPalette('rbe')}<div class="r"><small>Ответ</small><input id="rba" value="${A.rba}"></div>`;actTopBind(rebusForm);bindIn('rbc',v=>A.rbc=v);bindIn('rbe',v=>A.rb=v);bindIn('rba',v=>A.rba=v)}
+// 15. Найди лишнего
+function drawOdd(){const A=ACT(),q=A.mode=='q';actBg();actHead('НАЙДИ ЛИШНЕГО',q?'НОМЕР — В КОММЕНТАРИЯХ':'ПРАВИЛЬНЫЙ ОТВЕТ');const t0=T0(),gh=(q?950:830)-t0,cw=420,ch=Math.min(250,(gh-30)/2),gx=[110,550],gy=[t0+10,t0+10+ch+20];
+ A.od.slice(0,4).forEach((n,i)=>{const x=gx[i%2],y=gy[i>>1],hl=!q&&i==A.odi;X.save();if(!q&&!hl)X.globalAlpha=.35;boxR(x,y,cw,ch,hl);teamLogo(n,x+cw/2,y+ch/2-18,ch*.55);txtFit(tName(n),x+cw/2,y+ch-20,cw-40,40);drawEmo(KC(i+1),x+36,y+36,50);X.restore()});
+ if(!q&&A.odr){const f=AF()?`28px ${DGF},serif`:`400 24px ${MONO}`;wrapLines(A.odr,f,-.5,900).slice(0,2).forEach((l,i)=>TT(l,540,880+i*32,f,'#fff','center',-.5))}actFoot('')}
+function oddForm(){const A=ACT();$('fm').innerHTML=actTop(1)+[0,1,2,3].map(i=>`<div class="r"><small>${i+1}</small>${tBtn('odt'+i,A.od[i])}<button class="b ${A.odi==i?'':'g'}" data-odi="${i}" style="flex:none">лишний</button></div>`).join('')+`<small>Почему (для ответа)</small><textarea id="odr" style="height:56px">${A.odr}</textarea>`;actTopBind(oddForm);[0,1,2,3].forEach(i=>bindT('odt'+i,v=>A.od[i]=v));$('fm').querySelectorAll('[data-odi]').forEach(b=>b.onclick=()=>{A.odi=+b.dataset.odi;oddForm();draw()});bindIn('odr',v=>A.odr=v)}
+// 16. Кто это сказал?
+function drawSaid(){const A=ACT(),q=A.mode=='q';actBg();actHead(q?'КТО ЭТО СКАЗАЛ?':'ПРАВИЛЬНЫЙ ОТВЕТ',q?'ПИШИ ОТВЕТ В КОММЕНТАРИЯХ':'');const t0=T0(),[f,ls]=QF(),lh=52;
+ if(q){const L=wrapLines('«'+(A.sdq||'')+'»',f,ls,840).slice(0,8),bh=(L.length-1)*lh+110;qBox(L,90,t0+(950-t0)/2-bh/2,900,lh,f,ls)}
+ else{phDraw(pimg(A.sdp),265,960,420,960-t0-10,false);const L=wrapLines('«'+(A.sdq||'')+'»',f,ls,480).slice(0,9),bh=(L.length-1)*lh+110;qBox(L,490,t0+(880-t0)/2-bh/2,540,lh,f,ls);nickP(A.sdp,265,905,400,86)}actFoot('')}
+function saidForm(){const A=ACT();$('fm').innerHTML=actTop(1)+`<small>Цитата (Tab — новая строка)</small><textarea id="sdq" style="height:90px">${A.sdq}</textarea><div class="r"><small>Кто сказал</small>${pBtn('sdp',A.sdp)}</div>`;actTopBind(saidForm);bindIn('sdq',v=>A.sdq=v);bindP('sdp',v=>A.sdp=v)}
+// 17. Оцени от 1 до 5
+function drawRate(){const A=ACT();actBg();actHead('ОЦЕНИ',(A.rst||'').toUpperCase());const t0=T0();
+ if(A.rkind=='t')teamLogo(A.rteam,540,t0+(790-t0)/2,Math.min(380,790-t0-40));else phDraw(pimg(A.rs),540,810,620,810-t0,false);
+ [1,2,3,4,5].forEach((n,i)=>drawEmo(KC(n),540+(i-2)*150,880,112));actMono('ПЛОХО',240,965,20,'rgba(255,255,255,.7)');actMono('ИМБА',840,965,20,'rgba(255,255,255,.7)');actFoot('')}
+function rateForm(){const A=ACT();$('fm').innerHTML=actTop(0)+`<div class="r"><small>Что оценить</small><input id="rst" value="${A.rst}"></div><div class="r"><button class="b ${A.rkind=='p'?'':'g'}" data-rk="p" style="flex:1">Игрок</button><button class="b ${A.rkind=='t'?'':'g'}" data-rk="t" style="flex:1">Команда</button></div><div class="r">${A.rkind=='t'?tBtn('rtm',A.rteam):pBtn('rpl',A.rs)}</div><small style="display:block;line-height:1.5">Оценку подписчики пишут цифрой в комментариях.</small>`;actTopBind(rateForm);bindIn('rst',v=>A.rst=v);$('fm').querySelectorAll('[data-rk]').forEach(b=>b.onclick=()=>{A.rkind=b.dataset.rk;rateForm();draw()});bindT('rtm',v=>A.rteam=v);bindP('rpl',v=>A.rs=v)}
+// 18. Кто MVP?
+function drawMvp(){const A=ACT();actBg();actHead('КТО MVP?',(A.mvt||'').toUpperCase());const t0=T0();
+ A.mv.slice(0,4).forEach((n,i)=>{const cx=150+i*260;phDraw(pimg(n),cx,885,255,885-t0-90,false);drawEmo(KC(i+1),cx,t0+42,80);nickP(n,cx,905,240,62)});actFoot('ГОЛОСУЙ В КОММЕНТАРИЯХ')}
+function mvpForm(){const A=ACT();$('fm').innerHTML=actTop(0)+`<div class="r"><small>Турнир</small><input id="mvtt" value="${A.mvt}"></div>`+[0,1,2,3].map(i=>`<div class="r"><small>${i+1}</small>${pBtn('mvp'+i,A.mv[i])}</div>`).join('');actTopBind(mvpForm);bindIn('mvtt',v=>A.mvt=v);[0,1,2,3].forEach(i=>bindP('mvp'+i,v=>A.mv[i]=v))}
+// 19. А вы знали?
+function drawFact(){const A=ACT();actBg();actHead('А ВЫ ЗНАЛИ?','');const t0=T0(),[f,ls]=QF(),img=A.fp?pimg(A.fp):null,bw=img?540:860,bx=img?470:110,L=wrapLines(A.fct||'',f,ls,bw-60).slice(0,8),lh=52,bh=(L.length-1)*lh+110,by=t0+(930-t0)/2-bh/2;
+ if(img)phDraw(img,250,960,420,960-t0-10,false);qBox(L,bx,by,bw,lh,f,ls);if(A.fe)drawEmo(A.fe,bx+bw-14,by-14,110);actFoot('')}
+function factForm(){const A=ACT();$('fm').innerHTML=actTop(0)+`<small>Факт (Tab — новая строка)</small><textarea id="fct" style="height:100px">${A.fct}</textarea><div class="r"><small>Фото</small>${pBtn('fpp',A.fp)}<button class="ico" id="fpx">✕</button></div><div class="r"><small>Эмодзи в углу</small><input id="fem" value="${A.fe}"></div>${emoPalette('fem')}`;
+ actTopBind(factForm);bindIn('fct',v=>A.fct=v);bindP('fpp',v=>A.fp=v);$('fpx').onclick=()=>{A.fp='';factForm();draw()};$('fem').oninput=e=>{A.fe=segE(e.target.value).slice(-1)[0]||'';e.target.value=A.fe;draw()}}
+// 20. Больше или меньше?
+function drawHL(){const A=ACT(),q=A.mode=='q';actBg();actHead('БОЛЬШЕ ИЛИ МЕНЬШЕ?',(A.hs||'').toUpperCase());const t0=T0(),num=v=>parseFloat(String(v).replace(',','.'));
+ [[A.ha,A.hva,270,0],[A.hb,q?'?':A.hvb,810,1]].forEach(([n,v,cx,j])=>{phDraw(pimg(n),cx,760,420,760-t0-10,false);nickP(n,cx,780,400,62);let col=AF()?'#f6f0ee':'#f79400';
+  if(j&&!q){const a=num(A.hva),b=num(A.hvb);if(!isNaN(a)&&!isNaN(b))col=b>a?'#3ad07a':b<a?'#ff5a4f':col}txtFit(v,cx,905,380,100,col)});
+ actMono('VS',540,600,40,'rgba(255,255,255,.5)');
+ if(q){drawEmo('👍',330,972,56);actMono('БОЛЬШЕ',366,983,26,'#fff','left');drawEmo('👎',590,972,56);actMono('МЕНЬШЕ',626,983,26,'#fff','left');if(!AF()&&IMG.exe)X.drawImage(IMG.exe,497,1026)}else actFoot('')}
+function hlForm(){const A=ACT(),iw='flex:0 0 80px;width:80px;text-align:center';$('fm').innerHTML=actTop(1)+`<div class="r"><small>Показатель</small><input id="hls" value="${A.hs}"></div><div class="r"><small>Игрок 1</small>${pBtn('hla',A.ha)}<input id="hva" value="${A.hva}" style="${iw}"></div><div class="r"><small>Игрок 2</small>${pBtn('hlb',A.hb)}<input id="hvb" value="${A.hvb}" style="${iw}"></div><small style="display:block;line-height:1.5">Число игрока 2 скрыто в вопросе и открывается в ответе: зелёным, если больше, красным — если меньше.</small>`;
+ actTopBind(hlForm);bindIn('hls',v=>A.hs=v);bindP('hla',v=>A.ha=v);bindP('hlb',v=>A.hb=v);bindIn('hva',v=>A.hva=v);bindIn('hvb',v=>A.hvb=v)}
+// 21. Викторина
+function drawQuiz(){const A=ACT(),q=A.mode=='q';actBg();actHead('ВИКТОРИНА',q?'НОМЕР — В КОММЕНТАРИЯХ':'ПРАВИЛЬНЫЙ ОТВЕТ');const t0=T0(),d=AF(),f=d?`38px ${DGF},serif`:`500 34px ${MONO}`,ls=d?1:-1.3,L=wrapLines((A.qq||'').toUpperCase(),f,ls,880).slice(0,3);
+ L.forEach((l,i)=>TT(l,540,t0+30+i*46,f,'#fff','center',ls));const oy=t0+30+L.length*46+10,oh=Math.min(120,(940-oy)/2-14),ow=430;
+ A.qo.slice(0,4).forEach((o,i)=>{const x=i%2?550:100,y=oy+(i>>1)*(oh+20),ok=!q&&i==A.qi;X.save();if(!q&&!ok)X.globalAlpha=.35;boxR(x,y,ow,oh,ok);drawEmo(KC(i+1),x+48,y+oh/2,58);
+  const t=findTeam(o),ex=t&&t.n!='TBD'&&[t.n,t.t,...t.a].some(k=>k.toLowerCase()==(o||'').trim().toLowerCase());let tx=x+92;if(ex){teamLogo(o,x+128,y+oh/2,oh*.55);tx=x+170}txtFit(o,tx,y+oh/2+(d?13:18),x+ow-20-tx,52,'#fff','left');X.restore()});actFoot('')}
+function quizForm(){const A=ACT();$('fm').innerHTML=actTop(1)+`<small>Вопрос</small><textarea id="qzq" style="height:70px">${A.qq}</textarea>`+[0,1,2,3].map(i=>`<div class="r"><small>${i+1}</small><input data-qo="${i}" value="${A.qo[i]||''}"><button class="b ${A.qi==i?'':'g'}" data-qi="${i}" style="flex:none">✓</button></div>`).join('')+`<small style="display:block;line-height:1.5">✓ — правильный вариант. Если вариант — название команды, рядом встанет логотип.</small>`;
+ actTopBind(quizForm);bindIn('qzq',v=>A.qq=v);$('fm').querySelectorAll('[data-qo]').forEach(e=>e.oninput=()=>{A.qo[+e.dataset.qo]=e.value;draw()});$('fm').querySelectorAll('[data-qi]').forEach(b=>b.onclick=()=>{A.qi=+b.dataset.qi;quizForm();draw()})}
+
 const TP={
  quote:{n:'Классика',g:'Цитата',d:drawQuote,f:[{k:'q_name',l:'Имя',t:'text',d:'ВЛАД'},{k:'q_sp',l:'Логотип WINLINE',t:'chk',d:'1'},{k:'q_nz',l:'Размер имени',t:'range',a:50,b:160,d:100},{k:'q_tz',l:'Размер текста',t:'range',a:50,b:160,d:100},{k:'q_text',l:'Цитата',t:'area',d:'FACEIT успешен просто потому что Valve похуй на читеров. Борись они с ними, FACEIT был бы не нужен.'},...PH]},
  quote2:{n:'С плашкой',g:'Цитата',d:drawQuote2,f:[{k:'q_name',l:'Имя',t:'text'},{k:'q_text',l:'Цитата',t:'area'},{k:'q_nz',l:'Размер имени',t:'range',a:50,b:160,d:100},{k:'q_tz',l:'Размер текста',t:'range',a:50,b:160,d:100},...PH]},
@@ -860,12 +941,22 @@ const TP={
  tier:{n:'Тир-лист',d:drawTier,custom:tierForm,f:[]},
  mapq:{n:'Угадай карту',d:drawMapQ,custom:mapqForm,f:[]},
  num:{n:'Угадай число',d:drawNum,custom:numForm,f:[]},
+ statq:{n:'Чья статистика?',d:drawStatQ,custom:statqForm,f:[]},
+ brk:{n:'Сетка-прогноз',d:drawBrk,custom:brkForm,f:[]},
+ rebus:{n:'Угадай по эмодзи',d:drawRebus,custom:rebusForm,f:[]},
+ odd:{n:'Найди лишнего',d:drawOdd,custom:oddForm,f:[]},
+ said:{n:'Кто это сказал?',d:drawSaid,custom:saidForm,f:[]},
+ rate:{n:'Оцени 1–5',d:drawRate,custom:rateForm,f:[]},
+ mvp:{n:'Кто MVP?',d:drawMvp,custom:mvpForm,f:[]},
+ fact:{n:'А вы знали?',d:drawFact,custom:factForm,f:[]},
+ hl:{n:'Больше или меньше',d:drawHL,custom:hlForm,f:[]},
+ quiz:{n:'Викторина',d:drawQuiz,custom:quizForm,f:[]},
  rmbg:{n:'Убрать фон',d:drawRmbg,dims:rmDims,custom:rmbgForm,nograin:1,f:[]},
  news:{n:'Новость',d:drawNews,f:[{k:'n_title',l:'Заголовок (строка с * — в плашке)',t:'area',d:'DLC\nБУДЕТ\n*В МАЕ?'},{k:'n_text',l:'Текст (*слово* — в плашке)',t:'area',d:'Жукоебы, *внимание!*\n\nНовости про DLC к Silksong появятся уже в этом месяце — пока DLC находится без точной даты выхода\n\nЭто мы точно *ждем*'},{k:'n_n1',l:'Меню 1',t:'text',d:'EXE    CS2    TOURNAMENTS'},{k:'n_n2',l:'Меню 2',t:'text',d:'GIVEAWAY    MEMES'},...PH]}};
 Object.values(TP).forEach(t=>t.f.forEach(f=>{if(f.d!==undefined)S[f.k]??=f.d}));
 let QK=1;try{QK=+localStorage.getItem('qk')||1}catch(_){}let CKs=1;
 function draw(){const [w,h]=TP[cur].dims?TP[cur].dims():[1080,TP[cur].h||1080],k=['krug','framev','wm','rmbg'].includes(cur)?1:QK;CKs=k;if(cv.height!=h*k||cv.width!=w*k){cv.width=w*k;cv.height=h*k;cv.style.setProperty('--ar',w/h)}$('dim').textContent=w*k+' × '+h*k+' · PNG'+(k>1?' · 2K':'');cv.style.background=TP[cur].nograin?'repeating-conic-gradient(#2a2a2e 0 25%,#1c1c1f 0 50%) 0 0/24px 24px':'';X.save();X.setTransform(k,0,0,k,0,0);TP[cur].d();X.restore();if(!TP[cur].nograin)grain();if(!HT)HT=setTimeout(commit,400)}
-function form(){const t=TP[cur];$('ttl').textContent=((GROUPS.find(g=>g[1].includes(cur))||[])[0]?(GROUPS.find(g=>g[1].includes(cur))[0]+' · '):'')+(NAMES[cur]||t.n);$('qd').style.display=['sched','sched2','sched3','sched4','veto','res','krug','frame','framev','wm','dota','rmbg','guess','who','poll','pick','logoq','score','tf','five','tier','mapq','num'].includes(cur)?'none':'';$('rs').style.display=t.custom?'none':'';if(t.custom){t.custom();return}$('fm').innerHTML=t.f.map(f=>{const v=S[f.k]??'';const lb=`<small>${f.l}</small>`;
+function form(){const t=TP[cur];$('ttl').textContent=((GROUPS.find(g=>g[1].includes(cur))||[])[0]?(GROUPS.find(g=>g[1].includes(cur))[0]+' · '):'')+(NAMES[cur]||t.n);$('qd').style.display=['sched','sched2','sched3','sched4','veto','res','krug','frame','framev','wm','dota','rmbg','guess','who','poll','pick','logoq','score','tf','five','tier','mapq','num','statq','brk','rebus','odd','said','rate','mvp','fact','hl','quiz'].includes(cur)?'none':'';$('rs').style.display=t.custom?'none':'';if(t.custom){t.custom();return}$('fm').innerHTML=t.f.map(f=>{const v=S[f.k]??'';const lb=`<small>${f.l}</small>`;
  return f.t=='chk'?`<label class="ck"><input type="checkbox" data-ck="${f.k}" ${v!=='0'?'checked':''}><span>${f.l}</span></label>`:f.t=='img'?`<div class="r">${lb}<input type="file" accept="image/*" data-i="${f.k}"></div>`:f.t=='range'?`<div class="r">${lb}<input type="range" min="${f.a}" max="${f.b}" value="${v}" data-k="${f.k}"></div>`:f.t=='area'?`${lb}<textarea data-k="${f.k}">${v}</textarea>`:`<div class="r">${lb}<input data-k="${f.k}" value="${v}"></div>`}).join('');
  $('fm').insertAdjacentHTML('beforeend','<div class="r"><button class="b g" id="pb" style="flex:1">Вставить фото из буфера</button>'+(cur=='stats'?'<button class="b g" id="hb" style="flex:1">Фото с HLTV</button>':'')+'</div>');if($('hb'))$('hb').onclick=()=>autoPhoto('photo_stats',S.s_name,true);
  if(cur.startsWith('match')){$('fm').insertAdjacentHTML('afterbegin',`<div class="mrow" style="margin-bottom:12px"><div class="r" style="justify-content:space-between"><small style="width:auto">Фото победы команды</small><label class="ck" style="margin:0;font-size:12px"><input type="checkbox" id="wauto" ${S.m_wauto!=='0'?'checked':''}><span>авто</span></label></div><div id="wins" style="display:flex;gap:6px;flex-wrap:wrap"></div><div id="wadm"></div></div>`);adminForm();
@@ -877,8 +968,8 @@ function form(){const t=TP[cur];$('ttl').textContent=((GROUPS.find(g=>g[1].inclu
  $('fm').querySelectorAll('[data-ck]').forEach(e=>e.onchange=()=>{S[e.dataset.ck]=e.checked?'1':'0';draw()});
  $('fm').querySelectorAll('[data-k]').forEach(e=>e.oninput=()=>{S[e.dataset.k]=e.value;if(e.dataset.k=='s_name')autoSoon('photo_stats',e.value);if(/^m_(score|t1|t2)$/.test(e.dataset.k)){clearTimeout(WAT);WAT=setTimeout(()=>{renderWins();winAuto()},700)}const lk={s_team:'logo',m_t1:'m_l1',m_t2:'m_l2'}[e.dataset.k];if(lk)logoFor(e.value,lk);draw()});
  $('fm').querySelectorAll('[data-i]').forEach(e=>e.onchange=()=>{const f=e.files[0];if(!f)return;const key=e.dataset.i=='photo'?PK():e.dataset.i;AUTO[key]=null;AUTO['_'+key]=null;photoLoad(f,i=>{im[key]=e.dataset.i=='photo'?enhance(i,[]):i});const tm={logo:S.s_team,m_l1:S.m_t1,m_l2:S.m_t2}[e.dataset.i];if(tm!==undefined&&tm.trim()){const fr=new FileReader();fr.onload=()=>{try{localStorage.setItem(LK(tm),fr.result)}catch(_){}};fr.readAsDataURL(f)}})}
-const GROUPS=[['Цитаты',['quote','quote2']],['Игроки',['stats','cmp']],['Итоги',['match','match2','match3','res']],['Расписание',['sched','sched2','sched3','sched4','veto']],['Видео',['krug','framev','wm']],['Посты',['news','frame']],['Dota',['dota']],['Активности',['guess','who','poll','pick','logoq','score','tf','five','tier','mapq','num']],['Инструменты',['rmbg']]];
-const NAMES={quote:'Классика',quote2:'С плашкой',stats:'Статистика игрока',cmp:'Сравнение игроков',match:'Классика',match2:'Вертикальный',match3:'По картам',res:'Результаты дня',sched:'Вертикальное',sched2:'Квадрат',sched3:'2 матча',sched4:'Финал',veto:'Map veto',krug:'Кружок',framev:'Рамка',wm:'С логотипом .exe',news:'Новость',frame:'Рамка для фото',dota:'DOTAGRADE',rmbg:'Убрать фон',guess:'Угадай игрока по силуэту',who:'Кто это? (размытое фото)',poll:'Кто победит?',pick:'Кого возьмёшь?',logoq:'Угадай команду по логотипу',score:'Угадай счёт',tf:'Правда или ложь',five:'Собери пятёрку',tier:'Тир-лист команд',mapq:'Угадай карту',num:'Угадай число'};
+const GROUPS=[['Цитаты',['quote','quote2']],['Игроки',['stats','cmp']],['Итоги',['match','match2','match3','res']],['Расписание',['sched','sched2','sched3','sched4','veto']],['Видео',['krug','framev','wm']],['Посты',['news','frame']],['Dota',['dota']],['Активности',['guess','who','poll','pick','logoq','score','tf','five','tier','mapq','num','statq','brk','rebus','odd','said','rate','mvp','fact','hl','quiz']],['Инструменты',['rmbg']]];
+const NAMES={quote:'Классика',quote2:'С плашкой',stats:'Статистика игрока',cmp:'Сравнение игроков',match:'Классика',match2:'Вертикальный',match3:'По картам',res:'Результаты дня',sched:'Вертикальное',sched2:'Квадрат',sched3:'2 матча',sched4:'Финал',veto:'Map veto',krug:'Кружок',framev:'Рамка',wm:'С логотипом .exe',news:'Новость',frame:'Рамка для фото',dota:'DOTAGRADE',rmbg:'Убрать фон',guess:'Угадай игрока по силуэту',who:'Кто это? (размытое фото)',poll:'Кто победит?',pick:'Кого возьмёшь?',logoq:'Угадай команду по логотипу',score:'Угадай счёт',tf:'Правда или ложь',five:'Собери пятёрку',tier:'Тир-лист команд',mapq:'Угадай карту',num:'Угадай число',statq:'Чья статистика?',brk:'Сетка-прогноз',rebus:'Угадай по эмодзи',odd:'Найди лишнего',said:'Кто это сказал?',rate:'Оцени 1–5',mvp:'Кто MVP?',fact:'А вы знали?',hl:'Больше или меньше',quiz:'Викторина'};
 let GOPEN={};try{GOPEN=JSON.parse(localStorage.getItem('gopen')||'{}')}catch(_){}
 function pick(k){ST[cur]={zoom:S.zoom,px:S.px,py:S.py,dim:S.dim};cur=k;Object.assign(S,ST[k]||{zoom:100,px:0,py:0,dim:0});nav();form();draw()}
 function nav(){const T_=$('tpls');T_.innerHTML='';const cg=(GROUPS.find(g=>g[1].includes(cur))||[])[0];if(cg&&GOPEN[cg]===undefined)GOPEN[cg]=1;
