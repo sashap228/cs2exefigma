@@ -53,7 +53,7 @@ details details{background:var(--bg);margin:10px 0 0}
 #pop{position:fixed;z-index:50;width:280px;max-height:360px;display:none;flex-direction:column;background:var(--p2);border:1px solid var(--b2);border-radius:12px;box-shadow:0 16px 48px rgba(0,0,0,.6);padding:8px}
 #pop input{margin-bottom:6px;border-color:var(--a)}#pop .ls{overflow:auto}#pop .it{display:flex;align-items:center;gap:10px;padding:8px;border-radius:7px;cursor:pointer}#pop .it:hover,#pop .it.on{background:var(--b)}#pop .it img{width:22px;height:22px;object-fit:contain}
 </style></head><body><div id="pop"><input id="ps" placeholder="Найти команду…" autocomplete="off"><div class="ls" id="pl"></div></div>
-<div class="top"><div class="brand"><b>.cs2</b>creator</div><div style="display:flex;align-items:center;gap:2px;margin-left:auto"><button class="ico" id="un" title="Отменить (Ctrl+Z)">↶</button><button class="ico" id="re" title="Вернуть (Ctrl+Shift+Z)">↷</button><div class="ver" id="ver" style="margin-left:8px">v55</div></div></div>
+<div class="top"><div class="brand"><b>.cs2</b>creator</div><div style="display:flex;align-items:center;gap:2px;margin-left:auto"><button class="ico" id="un" title="Отменить (Ctrl+Z)">↶</button><button class="ico" id="re" title="Вернуть (Ctrl+Shift+Z)">↷</button><div class="ver" id="ver" style="margin-left:8px">v56</div></div></div>
 <div class="app">
 <div class="col"><h1>Шаблоны</h1><div id="tpls"></div></div>
 <div class="col">
@@ -770,6 +770,66 @@ function tfForm(){const A=ACT();$('fm').innerHTML=actTop(1)+`<small>Утверж
  <small>Пояснение к ответу (необязательно)</small><textarea id="aex" style="height:60px">${A.expl}</textarea>`;
  actTopBind(tfForm);$('ast').oninput=e=>{A.stmt=e.target.value;draw()};$('aex').oninput=e=>{A.expl=e.target.value;draw()};$('fm').querySelectorAll('[data-tr]').forEach(b=>b.onclick=()=>{A.truth=+b.dataset.tr;tfForm();draw()})}
 
+// ---- АКТИВНОСТИ 3: пятёрка мечты, тир-лист, угадай карту, угадай число ----
+Object.assign(S.act,Object.assign({five:[{r:'AWP',p:'ZYWOO'},{r:'IGL',p:'ALEKSIB'},{r:'ENTRY',p:'DONK'},{r:'SUPPORT',p:''},{r:'LURKER',p:''}],fmode:'q',tsub:'КОМАНД НА MAJOR',tiers:{S:['Vitality','Team Spirit'],A:['MOUZ','NAVI'],B:['FURIA','The MongolZ'],C:['G2'],D:[]},tcur:'S',gmap:'Mirage',gz:3,gx:.5,gy:.5,nq:'СКОЛЬКО КИЛЛОВ СДЕЛАЛ DONK ЗА МАТЧ?',nans:'34',nnote:'',np:'DONK'},S.act));
+const PIMG={};function pimg(n){const p=findPlayer(n);if(!p)return null;if(PIMG[p.n])return PIMG[p.n].width?PIMG[p.n]:null;const i=new Image();i.onload=()=>draw();i.src='players/'+p.f;PIMG[p.n]=i;return null}
+// 8. Пятёрка мечты
+function drawFive(){const A=ACT();actBg();actHead('СОБЕРИ ПЯТЁРКУ',A.fmode=='q'?'ПИШИ СВОЙ СОСТАВ В КОММЕНТАРИЯХ':'МОЯ ПЯТЁРКА МЕЧТЫ');
+ const F=A.five.slice(0,5),cw=200,x0=540-cw*2;let sil=null;for(const p of PLAYERS){const i=pimg(p.n);if(i){sil=i;break}}
+ F.forEach((s,i)=>{const cx=x0+i*cw,img=A.fmode=='a'&&s.p?pimg(s.p):null,base=870;
+  if(img){const k=Math.min(230/img.width,440/img.height),w=img.width*k,h=img.height*k;X.drawImage(img,cx-w/2,base-h,w,h)}
+  else if(sil){const k=Math.min(230/sil.width,440/sil.height),w=sil.width*k,h=sil.height*k,c=document.createElement('canvas');c.width=sil.width;c.height=sil.height;const g=c.getContext('2d');g.drawImage(sil,0,0);g.globalCompositeOperation='source-in';g.fillStyle=AF()?'#2a1410':'#262626';g.fillRect(0,0,c.width,c.height);X.drawImage(c,cx-w/2,base-h,w,h);actText('?',cx,base-h*.45,AF()?110:130,AF()?'rgba(255,220,205,.6)':'#f79400')}
+  const r=(s.r||'').toUpperCase(),f=AF()?`28px ${DGF},serif`:`400 24px ${MONO}`,w=Math.min(190,W(r,f,0)+28);
+  if(AF()){X.save();X.beginPath();X.roundRect(cx-w/2,888,w,44,6);X.fillStyle='rgba(20,8,6,.6)';X.fill();X.strokeStyle='rgba(255,235,225,.3)';X.lineWidth=1.5;X.stroke();X.restore();TT(r,cx,919,f,'#f6f0ee','center',1)}
+  else{X.fillStyle='#f79400';X.fillRect(cx-w/2,888,w,44);TT(r,cx,918,f,'#111','center',-1)}
+  if(A.fmode=='a'&&s.p){const nm=s.p.toUpperCase();actMono(nm,cx,964,22)}});
+ actFoot('')}
+function fiveForm(){const A=ACT();$('fm').innerHTML=actTop(0)+`<div class="r"><button class="b ${A.fmode=='q'?'':'g'}" data-fm5="q" style="flex:1">Пустые слоты</button><button class="b ${A.fmode=='a'?'':'g'}" data-fm5="a" style="flex:1">С игроками</button></div>`+
+ A.five.map((s,i)=>`<div class="r"><input data-r5="${i}" value="${s.r}" style="flex:0 0 96px;width:96px;text-align:center"><button class="tp" data-p5="${i}"><span>${s.p||'Игрок'}</span><i>▾</i></button><button class="ico" data-x5="${i}">✕</button></div>`).join('')+`<small style="display:block;line-height:1.5">«Пустые слоты» — вопрос подписчикам, «С игроками» — твоя пятёрка или итог голосования.</small>`;
+ actTopBind(fiveForm);$('fm').querySelectorAll('[data-fm5]').forEach(b=>b.onclick=()=>{A.fmode=b.dataset.fm5;fiveForm();draw()});
+ $('fm').querySelectorAll('[data-r5]').forEach(e=>e.oninput=()=>{A.five[+e.dataset.r5].r=e.value;draw()});
+ $('fm').querySelectorAll('[data-p5]').forEach(b=>b.onclick=()=>openPick(b,p=>{if(p){A.five[+b.dataset.p5].p=p.n.toUpperCase();A.fmode='a';fiveForm();draw()}},'players'));
+ $('fm').querySelectorAll('[data-x5]').forEach(b=>b.onclick=()=>{A.five[+b.dataset.x5].p='';fiveForm();draw()})}
+// 9. Тир-лист
+const TCOL={S:'#ff4d4d',A:'#f79400',B:'#ffd23f',C:'#7bd389',D:'#6aa7ff'};
+function drawTier(){const A=ACT();actBg();actHead('ТИР-ЛИСТ',(A.tsub||'').toUpperCase());const keys=['S','A','B','C','D'],y0=AF()?280:350,rh=(960-y0)/5;
+ keys.forEach((k,r)=>{const y=y0+r*rh,L=(A.tiers[k]||[]);X.fillStyle=AF()?'rgba(20,8,6,.45)':'#161616';X.fillRect(70,y+4,940,rh-8);X.fillStyle=TCOL[k];X.fillRect(70,y+4,110,rh-8);
+  AF()?TT(k,125,y+rh/2+22,`64px ${DGF},serif`,'#140806','center',0):TT(k,125,y+rh/2+27,"76px 'Druk'",'#111','center',0);
+  const n=L.length,sz=Math.min(rh-30,n?780/n-14:0);L.forEach((t,j)=>{const tm=findTeam(t),i=tm&&tm.img;if(i&&i.width){const s=Math.min(sz/i.width,sz/i.height),w=i.width*s,h=i.height*s,cx=205+sz/2+j*(sz+14);X.drawImage(whiteLogo(i),cx-w/2,y+rh/2-h/2,w,h)}})});
+ actFoot('')}
+function tierForm(){const A=ACT(),keys=['S','A','B','C','D'];const ts=TEAMS.filter(t=>t.n!='TBD');
+ $('fm').innerHTML=actTop(0)+`<div class="r"><small>Подпись</small><input id="tsb" value="${A.tsub}"></div><small style="display:block;margin-bottom:6px">Выбери тир, потом нажимай на логотипы:</small>
+ <div class="r">${keys.map(k=>`<button class="b ${A.tcur==k?'':'g'}" data-tk="${k}" style="flex:1;${A.tcur==k?`background:${TCOL[k]};color:#111`:''}">${k}</button>`).join('')}</div>
+ ${keys.map(k=>`<div class="r" style="min-height:30px;flex-wrap:wrap"><small style="width:20px;color:${TCOL[k]};font-weight:700">${k}</small>${(A.tiers[k]||[]).map(t=>{const x=findTeam(t);return x?`<img src="${x.l}" data-trm="${k}:${t}" title="Убрать" style="width:26px;height:26px;object-fit:contain;cursor:pointer;background:#222;border-radius:4px;padding:2px">`:''}).join('')}</div>`).join('')}
+ <div class="r" style="flex-wrap:wrap;gap:4px;max-height:220px;overflow:auto">${ts.map(t=>`<img src="${t.l}" data-tad="${t.n}" title="${t.n}" style="width:34px;height:34px;object-fit:contain;cursor:pointer;background:#1c1c1f;border-radius:6px;padding:3px">`).join('')}</div>`;
+ actTopBind(tierForm);$('tsb').oninput=e=>{A.tsub=e.target.value;draw()};
+ $('fm').querySelectorAll('[data-tk]').forEach(b=>b.onclick=()=>{A.tcur=b.dataset.tk;tierForm()});
+ $('fm').querySelectorAll('[data-tad]').forEach(b=>b.onclick=()=>{const n=b.dataset.tad;keys.forEach(k=>A.tiers[k]=(A.tiers[k]||[]).filter(x=>x!==n));A.tiers[A.tcur].push(n);tierForm();draw()});
+ $('fm').querySelectorAll('[data-trm]').forEach(b=>b.onclick=()=>{const [k,n]=b.dataset.trm.split(/:(.+)/);A.tiers[k]=A.tiers[k].filter(x=>x!==n);tierForm();draw()})}
+// 10. Угадай карту
+function drawMapQ(){const A=ACT();actBg();const m=MIMG[A.gmap],q=A.mode=='q';
+ if(q){actHead('УГАДАЙ КАРТУ','ПО КУСОЧКУ');if(m){const R=AF()?300:270,cx=540,cy=AF()?620:650,s=Math.max(R*2/m.width,R*2/m.height)*A.gz,w=m.width*s,h=m.height*s;
+  X.save();X.beginPath();X.arc(cx,cy,R,0,7);X.clip();X.drawImage(m,cx-A.gx*w,cy-A.gy*h,w,h);X.restore();X.beginPath();X.arc(cx,cy,R,0,7);X.lineWidth=6;X.strokeStyle=AF()?'rgba(255,235,225,.45)':'#f79400';X.stroke()}}
+ else{actHead('ПРАВИЛЬНЫЙ ОТВЕТ','');if(m){const bw=760,bh=500,s=Math.max(bw/m.width,bh/m.height),w=m.width*s,h=m.height*s,x=160,y=AF()?300:330;X.save();X.beginPath();X.rect(x,y,bw,bh);X.clip();X.drawImage(m,540-w/2,y+bh/2-h/2,w,h);X.restore();X.lineWidth=4;X.strokeStyle=AF()?'rgba(255,235,225,.4)':'#f79400';X.strokeRect(x,y,bw,bh)}actPlate(A.gmap,900)}
+ actFoot('')}
+function mapqForm(){const A=ACT();$('fm').innerHTML=actTop(1)+`<div class="r"><small>Карта</small><select id="gmp">${MAPS.filter(m=>MIMG[m]).map(m=>`<option${m==A.gmap?' selected':''}>${m}</option>`).join('')}</select><button class="b g" id="gmr">🎲</button></div>
+ <div class="r"><small>Приближение</small><input type="range" min="10" max="80" value="${A.gz*10}" id="gmz"></div><div class="r"><small>Кусок X</small><input type="range" min="0" max="100" value="${A.gx*100}" id="gmx"></div><div class="r"><small>Кусок Y</small><input type="range" min="0" max="100" value="${A.gy*100}" id="gmy"></div>`;
+ actTopBind(mapqForm);$('gmp').onchange=e=>{A.gmap=e.target.value;draw()};$('gmr').onclick=()=>{const ms=MAPS.filter(m=>MIMG[m]);A.gmap=ms[Math.floor(Math.random()*ms.length)];A.gx=.2+Math.random()*.6;A.gy=.2+Math.random()*.6;mapqForm();draw()};
+ $('gmz').oninput=e=>{A.gz=e.target.value/10;draw()};$('gmx').oninput=e=>{A.gx=e.target.value/100;draw()};$('gmy').oninput=e=>{A.gy=e.target.value/100;draw()}}
+// 11. Угадай число
+function drawNum(){const A=ACT();actBg();const q=A.mode=='q';actHead('УГАДАЙ ЧИСЛО',q?'ПИШИ ОТВЕТ В КОММЕНТАРИЯХ':'ПРАВИЛЬНЫЙ ОТВЕТ');
+ const img=A.np?pimg(A.np):null;if(img){const k=Math.min(470/img.width,560/img.height),w=img.width*k,h=img.height*k;X.drawImage(img,300-w/2,960-h,w,h)}
+ const d=AF(),f=d?`36px ${DGF},serif`:`500 34px ${MONO}`,ls=d?1:-1.3,L=wrapLines((A.nq||'').toUpperCase(),f,ls,img?440:900).slice(0,5),cx=img?790:540,ty=AF()?330:400;
+ L.forEach((l,i)=>TT(l,cx,ty+i*46,f,'#fff','center',ls));
+ const ny=ty+L.length*46+170,v=q?'?':(A.nans||'?');if(d)TT(v,cx,ny,`200px ${DGF},serif`,'#f6f0ee','center',0);else{const z=fitS(v,"'Druk'",230,img?440:800,-.05);TT(v,cx,ny,`${z}px 'Druk'`,'#f79400','center',-.05*z)}
+ if(!q&&A.nnote){const nf=d?`26px ${DGF},serif`:`400 22px ${MONO}`;wrapLines(A.nnote,nf,-.5,img?440:900).slice(0,3).forEach((l,i)=>TT(l,cx,ny+56+i*30,nf,'rgba(255,255,255,.8)','center',-.5))}
+ actFoot('')}
+function numForm(){const A=ACT(),p=findPlayer(A.np);$('fm').innerHTML=actTop(1)+`<small>Вопрос (Tab — новая строка)</small><textarea id="nqq" style="height:70px">${A.nq}</textarea>
+ <div class="r"><small>Ответ</small><input id="nan" value="${A.nans}"></div><small>Пояснение (необязательно)</small><textarea id="nno" style="height:50px">${A.nnote}</textarea>
+ <div class="r"><small>Фото</small><button class="tp" id="npk"><span>${p?p.n+' · '+p.t:'Без игрока'}</span><i>▾</i></button><button class="ico" id="npx">✕</button></div>`;
+ actTopBind(numForm);$('nqq').oninput=e=>{A.nq=e.target.value;draw()};$('nan').oninput=e=>{A.nans=e.target.value;draw()};$('nno').oninput=e=>{A.nnote=e.target.value;draw()};
+ $('npk').onclick=()=>openPick($('npk'),p=>{if(p){A.np=p.n.toUpperCase();numForm();draw()}},'players');$('npx').onclick=()=>{A.np='';numForm();draw()}}
+
 const TP={
  quote:{n:'Классика',g:'Цитата',d:drawQuote,f:[{k:'q_name',l:'Имя',t:'text',d:'ВЛАД'},{k:'q_sp',l:'Логотип WINLINE',t:'chk',d:'1'},{k:'q_nz',l:'Размер имени',t:'range',a:50,b:160,d:100},{k:'q_tz',l:'Размер текста',t:'range',a:50,b:160,d:100},{k:'q_text',l:'Цитата',t:'area',d:'FACEIT успешен просто потому что Valve похуй на читеров. Борись они с ними, FACEIT был бы не нужен.'},...PH]},
  quote2:{n:'С плашкой',g:'Цитата',d:drawQuote2,f:[{k:'q_name',l:'Имя',t:'text'},{k:'q_text',l:'Цитата',t:'area'},{k:'q_nz',l:'Размер имени',t:'range',a:50,b:160,d:100},{k:'q_tz',l:'Размер текста',t:'range',a:50,b:160,d:100},...PH]},
@@ -796,12 +856,16 @@ const TP={
  logoq:{n:'Угадай команду',d:drawLogoQ,custom:logoForm,f:[]},
  score:{n:'Угадай счёт',d:drawScore,custom:scoreForm,f:[]},
  tf:{n:'Правда или ложь',d:drawTF,custom:tfForm,f:[]},
+ five:{n:'Пятёрка мечты',d:drawFive,custom:fiveForm,f:[]},
+ tier:{n:'Тир-лист',d:drawTier,custom:tierForm,f:[]},
+ mapq:{n:'Угадай карту',d:drawMapQ,custom:mapqForm,f:[]},
+ num:{n:'Угадай число',d:drawNum,custom:numForm,f:[]},
  rmbg:{n:'Убрать фон',d:drawRmbg,dims:rmDims,custom:rmbgForm,nograin:1,f:[]},
  news:{n:'Новость',d:drawNews,f:[{k:'n_title',l:'Заголовок (строка с * — в плашке)',t:'area',d:'DLC\nБУДЕТ\n*В МАЕ?'},{k:'n_text',l:'Текст (*слово* — в плашке)',t:'area',d:'Жукоебы, *внимание!*\n\nНовости про DLC к Silksong появятся уже в этом месяце — пока DLC находится без точной даты выхода\n\nЭто мы точно *ждем*'},{k:'n_n1',l:'Меню 1',t:'text',d:'EXE    CS2    TOURNAMENTS'},{k:'n_n2',l:'Меню 2',t:'text',d:'GIVEAWAY    MEMES'},...PH]}};
 Object.values(TP).forEach(t=>t.f.forEach(f=>{if(f.d!==undefined)S[f.k]??=f.d}));
 let QK=1;try{QK=+localStorage.getItem('qk')||1}catch(_){}let CKs=1;
 function draw(){const [w,h]=TP[cur].dims?TP[cur].dims():[1080,TP[cur].h||1080],k=['krug','framev','wm','rmbg'].includes(cur)?1:QK;CKs=k;if(cv.height!=h*k||cv.width!=w*k){cv.width=w*k;cv.height=h*k;cv.style.setProperty('--ar',w/h)}$('dim').textContent=w*k+' × '+h*k+' · PNG'+(k>1?' · 2K':'');cv.style.background=TP[cur].nograin?'repeating-conic-gradient(#2a2a2e 0 25%,#1c1c1f 0 50%) 0 0/24px 24px':'';X.save();X.setTransform(k,0,0,k,0,0);TP[cur].d();X.restore();if(!TP[cur].nograin)grain();if(!HT)HT=setTimeout(commit,400)}
-function form(){const t=TP[cur];$('ttl').textContent=((GROUPS.find(g=>g[1].includes(cur))||[])[0]?(GROUPS.find(g=>g[1].includes(cur))[0]+' · '):'')+(NAMES[cur]||t.n);$('qd').style.display=['sched','sched2','sched3','sched4','veto','res','krug','frame','framev','wm','dota','rmbg','guess','who','poll','pick','logoq','score','tf'].includes(cur)?'none':'';$('rs').style.display=t.custom?'none':'';if(t.custom){t.custom();return}$('fm').innerHTML=t.f.map(f=>{const v=S[f.k]??'';const lb=`<small>${f.l}</small>`;
+function form(){const t=TP[cur];$('ttl').textContent=((GROUPS.find(g=>g[1].includes(cur))||[])[0]?(GROUPS.find(g=>g[1].includes(cur))[0]+' · '):'')+(NAMES[cur]||t.n);$('qd').style.display=['sched','sched2','sched3','sched4','veto','res','krug','frame','framev','wm','dota','rmbg','guess','who','poll','pick','logoq','score','tf','five','tier','mapq','num'].includes(cur)?'none':'';$('rs').style.display=t.custom?'none':'';if(t.custom){t.custom();return}$('fm').innerHTML=t.f.map(f=>{const v=S[f.k]??'';const lb=`<small>${f.l}</small>`;
  return f.t=='chk'?`<label class="ck"><input type="checkbox" data-ck="${f.k}" ${v!=='0'?'checked':''}><span>${f.l}</span></label>`:f.t=='img'?`<div class="r">${lb}<input type="file" accept="image/*" data-i="${f.k}"></div>`:f.t=='range'?`<div class="r">${lb}<input type="range" min="${f.a}" max="${f.b}" value="${v}" data-k="${f.k}"></div>`:f.t=='area'?`${lb}<textarea data-k="${f.k}">${v}</textarea>`:`<div class="r">${lb}<input data-k="${f.k}" value="${v}"></div>`}).join('');
  $('fm').insertAdjacentHTML('beforeend','<div class="r"><button class="b g" id="pb" style="flex:1">Вставить фото из буфера</button>'+(cur=='stats'?'<button class="b g" id="hb" style="flex:1">Фото с HLTV</button>':'')+'</div>');if($('hb'))$('hb').onclick=()=>autoPhoto('photo_stats',S.s_name,true);
  if(cur.startsWith('match')){$('fm').insertAdjacentHTML('afterbegin',`<div class="mrow" style="margin-bottom:12px"><div class="r" style="justify-content:space-between"><small style="width:auto">Фото победы команды</small><label class="ck" style="margin:0;font-size:12px"><input type="checkbox" id="wauto" ${S.m_wauto!=='0'?'checked':''}><span>авто</span></label></div><div id="wins" style="display:flex;gap:6px;flex-wrap:wrap"></div><div id="wadm"></div></div>`);adminForm();
@@ -813,8 +877,8 @@ function form(){const t=TP[cur];$('ttl').textContent=((GROUPS.find(g=>g[1].inclu
  $('fm').querySelectorAll('[data-ck]').forEach(e=>e.onchange=()=>{S[e.dataset.ck]=e.checked?'1':'0';draw()});
  $('fm').querySelectorAll('[data-k]').forEach(e=>e.oninput=()=>{S[e.dataset.k]=e.value;if(e.dataset.k=='s_name')autoSoon('photo_stats',e.value);if(/^m_(score|t1|t2)$/.test(e.dataset.k)){clearTimeout(WAT);WAT=setTimeout(()=>{renderWins();winAuto()},700)}const lk={s_team:'logo',m_t1:'m_l1',m_t2:'m_l2'}[e.dataset.k];if(lk)logoFor(e.value,lk);draw()});
  $('fm').querySelectorAll('[data-i]').forEach(e=>e.onchange=()=>{const f=e.files[0];if(!f)return;const key=e.dataset.i=='photo'?PK():e.dataset.i;AUTO[key]=null;AUTO['_'+key]=null;photoLoad(f,i=>{im[key]=e.dataset.i=='photo'?enhance(i,[]):i});const tm={logo:S.s_team,m_l1:S.m_t1,m_l2:S.m_t2}[e.dataset.i];if(tm!==undefined&&tm.trim()){const fr=new FileReader();fr.onload=()=>{try{localStorage.setItem(LK(tm),fr.result)}catch(_){}};fr.readAsDataURL(f)}})}
-const GROUPS=[['Цитаты',['quote','quote2']],['Игроки',['stats','cmp']],['Итоги',['match','match2','match3','res']],['Расписание',['sched','sched2','sched3','sched4','veto']],['Видео',['krug','framev','wm']],['Посты',['news','frame']],['Dota',['dota']],['Активности',['guess','who','poll','pick','logoq','score','tf']],['Инструменты',['rmbg']]];
-const NAMES={quote:'Классика',quote2:'С плашкой',stats:'Статистика игрока',cmp:'Сравнение игроков',match:'Классика',match2:'Вертикальный',match3:'По картам',res:'Результаты дня',sched:'Вертикальное',sched2:'Квадрат',sched3:'2 матча',sched4:'Финал',veto:'Map veto',krug:'Кружок',framev:'Рамка',wm:'С логотипом .exe',news:'Новость',frame:'Рамка для фото',dota:'DOTAGRADE',rmbg:'Убрать фон',guess:'Угадай игрока по силуэту',who:'Кто это? (размытое фото)',poll:'Кто победит?',pick:'Кого возьмёшь?',logoq:'Угадай команду по логотипу',score:'Угадай счёт',tf:'Правда или ложь'};
+const GROUPS=[['Цитаты',['quote','quote2']],['Игроки',['stats','cmp']],['Итоги',['match','match2','match3','res']],['Расписание',['sched','sched2','sched3','sched4','veto']],['Видео',['krug','framev','wm']],['Посты',['news','frame']],['Dota',['dota']],['Активности',['guess','who','poll','pick','logoq','score','tf','five','tier','mapq','num']],['Инструменты',['rmbg']]];
+const NAMES={quote:'Классика',quote2:'С плашкой',stats:'Статистика игрока',cmp:'Сравнение игроков',match:'Классика',match2:'Вертикальный',match3:'По картам',res:'Результаты дня',sched:'Вертикальное',sched2:'Квадрат',sched3:'2 матча',sched4:'Финал',veto:'Map veto',krug:'Кружок',framev:'Рамка',wm:'С логотипом .exe',news:'Новость',frame:'Рамка для фото',dota:'DOTAGRADE',rmbg:'Убрать фон',guess:'Угадай игрока по силуэту',who:'Кто это? (размытое фото)',poll:'Кто победит?',pick:'Кого возьмёшь?',logoq:'Угадай команду по логотипу',score:'Угадай счёт',tf:'Правда или ложь',five:'Собери пятёрку',tier:'Тир-лист команд',mapq:'Угадай карту',num:'Угадай число'};
 let GOPEN={};try{GOPEN=JSON.parse(localStorage.getItem('gopen')||'{}')}catch(_){}
 function pick(k){ST[cur]={zoom:S.zoom,px:S.px,py:S.py,dim:S.dim};cur=k;Object.assign(S,ST[k]||{zoom:100,px:0,py:0,dim:0});nav();form();draw()}
 function nav(){const T_=$('tpls');T_.innerHTML='';const cg=(GROUPS.find(g=>g[1].includes(cur))||[])[0];if(cg&&GOPEN[cg]===undefined)GOPEN[cg]=1;
