@@ -53,7 +53,7 @@ details details{background:var(--bg);margin:10px 0 0}
 #pop{position:fixed;z-index:50;width:280px;max-height:360px;display:none;flex-direction:column;background:var(--p2);border:1px solid var(--b2);border-radius:12px;box-shadow:0 16px 48px rgba(0,0,0,.6);padding:8px}
 #pop input{margin-bottom:6px;border-color:var(--a)}#pop .ls{overflow:auto}#pop .it{display:flex;align-items:center;gap:10px;padding:8px;border-radius:7px;cursor:pointer}#pop .it:hover,#pop .it.on{background:var(--b)}#pop .it img{width:22px;height:22px;object-fit:contain}
 </style></head><body><div id="pop"><input id="ps" placeholder="Найти команду…" autocomplete="off"><div class="ls" id="pl"></div></div>
-<div class="top"><div class="brand"><b>.cs2</b>creator</div><div style="display:flex;align-items:center;gap:2px;margin-left:auto"><button class="ico" id="un" title="Отменить (Ctrl+Z)">↶</button><button class="ico" id="re" title="Вернуть (Ctrl+Shift+Z)">↷</button><div class="ver" id="ver" style="margin-left:8px">v48</div></div></div>
+<div class="top"><div class="brand"><b>.cs2</b>creator</div><div style="display:flex;align-items:center;gap:2px;margin-left:auto"><button class="ico" id="un" title="Отменить (Ctrl+Z)">↶</button><button class="ico" id="re" title="Вернуть (Ctrl+Shift+Z)">↷</button><div class="ver" id="ver" style="margin-left:8px">v49</div></div></div>
 <div class="app">
 <div class="col"><h1>Шаблоны</h1><div id="tpls"></div></div>
 <div class="col">
@@ -675,7 +675,7 @@ function form(){const t=TP[cur];$('ttl').textContent=((GROUPS.find(g=>g[1].inclu
  $('fm').querySelectorAll('[data-k]').forEach(e=>e.oninput=()=>{S[e.dataset.k]=e.value;if(e.dataset.k=='s_name')autoSoon('photo_stats',e.value);if(/^m_(score|t1|t2)$/.test(e.dataset.k)){clearTimeout(WAT);WAT=setTimeout(()=>{renderWins();winAuto()},700)}const lk={s_team:'logo',m_t1:'m_l1',m_t2:'m_l2'}[e.dataset.k];if(lk)logoFor(e.value,lk);draw()});
  $('fm').querySelectorAll('[data-i]').forEach(e=>e.onchange=()=>{const f=e.files[0];if(!f)return;const key=e.dataset.i=='photo'?PK():e.dataset.i;AUTO[key]=null;AUTO['_'+key]=null;photoLoad(f,i=>{im[key]=e.dataset.i=='photo'?enhance(i,[]):i});const tm={logo:S.s_team,m_l1:S.m_t1,m_l2:S.m_t2}[e.dataset.i];if(tm!==undefined&&tm.trim()){const fr=new FileReader();fr.onload=()=>{try{localStorage.setItem(LK(tm),fr.result)}catch(_){}};fr.readAsDataURL(f)}})}
 const GROUPS=[['Цитаты',['quote','quote2']],['Игроки',['stats','cmp']],['Итоги',['match','match2','match3','res']],['Расписание',['sched','sched2','sched3','sched4','veto']],['Видео',['krug','framev','wm']],['Посты',['news','frame']],['Dota',['dota']],['Инструменты',['ai','rmbg']]];
-const NAMES={quote:'Классика',quote2:'С плашкой',stats:'Статистика игрока',cmp:'Сравнение игроков',match:'Классика',match2:'Вертикальный',match3:'По картам',res:'Результаты дня',sched:'Вертикальное',sched2:'Квадрат',sched3:'2 матча',sched4:'Финал',veto:'Map veto',krug:'Кружок',framev:'Рамка',wm:'С логотипом .exe',news:'Новость',frame:'Рамка для фото',dota:'DOTAGRADE',rmbg:'Убрать фон',ai:'AI-картинки (Seedream)'};
+const NAMES={quote:'Классика',quote2:'С плашкой',stats:'Статистика игрока',cmp:'Сравнение игроков',match:'Классика',match2:'Вертикальный',match3:'По картам',res:'Результаты дня',sched:'Вертикальное',sched2:'Квадрат',sched3:'2 матча',sched4:'Финал',veto:'Map veto',krug:'Кружок',framev:'Рамка',wm:'С логотипом .exe',news:'Новость',frame:'Рамка для фото',dota:'DOTAGRADE',rmbg:'Убрать фон',ai:'AI-картинки'};
 let GOPEN={};try{GOPEN=JSON.parse(localStorage.getItem('gopen')||'{}')}catch(_){}
 function pick(k){ST[cur]={zoom:S.zoom,px:S.px,py:S.py,dim:S.dim};cur=k;Object.assign(S,ST[k]||{zoom:100,px:0,py:0,dim:0});nav();form();draw()}
 function nav(){const T_=$('tpls');T_.innerHTML='';const cg=(GROUPS.find(g=>g[1].includes(cur))||[])[0];if(cg&&GOPEN[cg]===undefined)GOPEN[cg]=1;
@@ -915,13 +915,20 @@ function rmbgForm(){const has=!!RM.o,md=(m,t)=>`<button class="b ${RM.mode==m?''
  $('rmu').onclick=rmUndo;$('rmr').onclick=()=>{rmPush();const g=RM.m.getContext('2d');g.globalCompositeOperation='source-over';g.fillStyle='#fff';g.fillRect(0,0,RM.w,RM.h);draw()}}
 
 // ---- AI-картинки через fal.ai (ключ хранится только в этом браузере) ----
-const AIM=[['bytedance/seedream/v5/pro/text-to-image','Seedream 5.0 Pro — по тексту'],['bytedance/seedream/v5/pro/edit','Seedream 5.0 Pro — правка по фото']];
+const AIM=[['poll:flux','Бесплатно — Flux (Pollinations)'],['poll:turbo','Бесплатно — Turbo, быстрее (Pollinations)'],['bytedance/seedream/v5/pro/text-to-image','Seedream 5.0 Pro — по тексту'],['bytedance/seedream/v5/pro/edit','Seedream 5.0 Pro — правка по фото']];
 const AI={img:null,refs:[],busy:false};
+const PSZ={auto_2K:[1024,1024],square_hd:[1024,1024],portrait_4_3:[864,1152],portrait_16_9:[768,1344],landscape_16_9:[1344,768]};
+async function aiFree(model,prompt,size){const [w,h]=PSZ[size]||[1024,1024],u='https://image.pollinations.ai/prompt/'+encodeURIComponent(prompt)+`?width=${w}&height=${h}&model=${model}&nologo=true&seed=${Math.floor(Math.random()*1e9)}`;
+ AI.busy=true;draw();prog('Генерирую бесплатно… обычно 10–60 секунд',null);
+ const fin=i=>{AI.img=i;AI.busy=false;draw();aiForm();progOff('Готово ✓')},fail=e=>{AI.busy=false;draw();progOff('Не вышло: '+String(e&&e.message||e||'сервис занят, попробуй ещё раз').slice(0,120))};
+ try{const c=new AbortController(),t=setTimeout(()=>c.abort(),120000),r=await fetch(u,{signal:c.signal});clearTimeout(t);if(!r.ok)throw new Error('сервис ответил '+r.status+(r.status==429?' — слишком часто, подожди минуту':''));const b=await r.blob();if(!b.type.startsWith('image'))throw new Error('сервис занят, попробуй ещё раз');const i=new Image();i.onload=()=>fin(i);i.src=URL.createObjectURL(b)}
+ catch(e){if(e.name==='TypeError'){const i=new Image();i.crossOrigin='anonymous';i.onload=()=>fin(i);i.onerror=()=>fail('сервис недоступен');i.src=u}else fail(e)}}
 function aiDims(){const p=AI.img;if(!p)return[1080,1080];const w=p.naturalWidth,h=p.naturalHeight,k=Math.min(1,2048/Math.max(w,h));return[Math.round(w*k),Math.round(h*k)]}
 function drawAI(){const [w,h]=aiDims();X.fillStyle='#141416';X.fillRect(0,0,w,h);if(AI.img)X.drawImage(AI.img,0,0,w,h);else{X.fillStyle='rgba(255,255,255,.35)';X.font=`500 28px ${MONO}`;X.textAlign='center';X.textBaseline='middle';X.fillText(AI.busy?'Генерирую…':'Напиши запрос и нажми «Сгенерировать»',540,540)}}
 const fileURL=f=>new Promise(r=>{const fr=new FileReader();fr.onload=()=>r(fr.result);fr.readAsDataURL(f)});
 async function aiGo(){const key=(localStorage.getItem('fal_key')||'').trim(),model=($('aim').value==='custom'?$('aic').value:$('aim').value).trim(),prompt=$('aip').value.trim();
- if(!key){$('aik').focus();progOff('Вставь ключ fal.ai');return}if(!prompt){$('aip').focus();return}
+ if(!prompt){$('aip').focus();return}if(model.startsWith('poll:'))return aiFree(model.slice(5),prompt,$('ais').value);
+ if(!key){$('details#aikd')&&0;progOff('Для Seedream нужен ключ fal.ai (внизу)');return}
  const edit=/edit/.test(model);if(edit&&!AI.refs.length){progOff('Для правки добавь фото');return}
  const body={prompt,num_images:1,image_size:$('ais').value};if(edit)body.image_urls=AI.refs;
  AI.busy=true;draw();prog('Генерирую… обычно 10–40 секунд',null);
@@ -940,7 +947,7 @@ function aiForm(){const key=localStorage.getItem('fal_key')||'',sel=localStorage
  <div id="aiedit" style="${/edit/.test(isC?sel:sel)?'':'display:none'}"><label class="b g" style="width:100%;display:flex;align-items:center;justify-content:center;cursor:pointer;margin-bottom:6px">Добавить фото для правки (${AI.refs.length}/10)<input type="file" accept="image/*" multiple id="air" hidden></label>${AI.refs.length?`<div class="r" style="flex-wrap:wrap">${AI.refs.map((u,i)=>`<img src="${u}" data-ard="${i}" title="Убрать" style="width:52px;height:52px;object-fit:cover;border-radius:6px;cursor:pointer">`).join('')}</div>`:''}</div>
  <button class="b" id="aigo" style="width:100%;margin-bottom:10px">✨ Сгенерировать</button>
  ${AI.img?`<div class="r"><select id="ait">${tpl.map(k=>`<option value="${k}">${(GROUPS.find(g=>g[1].includes(k))||[''])[0]} · ${NAMES[k]||TP[k].n}</option>`).join('')}</select><button class="b g" id="aiu">В шаблон</button></div>`:''}
- <details style="margin-top:6px"><summary>Ключ fal.ai</summary><div class="in"><div class="r"><input id="aik" type="password" placeholder="ключ fal.ai" value="${key}" autocomplete="off"></div><small style="display:block;line-height:1.5">Ключ: fal.ai → Dashboard → Keys. Хранится только в этом браузере, в код сайта не попадает. Генерации платные по тарифу fal.ai (Seedream 5.0 Pro — от ~$0.07 за картинку).</small></div></details>`;
+ <details style="margin-top:6px"><summary>Ключ fal.ai (для платных моделей)</summary><div class="in"><div class="r"><input id="aik" type="password" placeholder="ключ fal.ai" value="${key}" autocomplete="off"></div><small style="display:block;line-height:1.5">Ключ: fal.ai → Dashboard → Keys. Хранится только в этом браузере, в код сайта не попадает. Нужен только для Seedream и других моделей fal.ai — они платные (Seedream 5.0 Pro — от ~$0.07 за картинку). Бесплатные модели работают без ключа.</small></div></details>`;
  $('aim').onchange=e=>{const v=e.target.value;$('aicr').style.display=v=='custom'?'':'none';if(v!='custom')localStorage.setItem('fal_model',v);$('aiedit').style.display=/edit/.test(v=='custom'?$('aic').value:v)?'':'none'};
  $('aic').oninput=e=>{localStorage.setItem('fal_model',e.target.value.trim());$('aiedit').style.display=/edit/.test(e.target.value)?'':'none'};
  $('aip').oninput=e=>AI.prompt=e.target.value;$('ais').onchange=e=>AI.size=e.target.value;
