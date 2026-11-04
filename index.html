@@ -53,7 +53,7 @@ details details{background:var(--bg);margin:10px 0 0}
 #pop{position:fixed;z-index:50;width:280px;max-height:360px;display:none;flex-direction:column;background:var(--p2);border:1px solid var(--b2);border-radius:12px;box-shadow:0 16px 48px rgba(0,0,0,.6);padding:8px}
 #pop input{margin-bottom:6px;border-color:var(--a)}#pop .ls{overflow:auto}#pop .it{display:flex;align-items:center;gap:10px;padding:8px;border-radius:7px;cursor:pointer}#pop .it:hover,#pop .it.on{background:var(--b)}#pop .it img{width:22px;height:22px;object-fit:contain}
 </style></head><body><div id="pop"><input id="ps" placeholder="Найти команду…" autocomplete="off"><div class="ls" id="pl"></div></div>
-<div class="top"><div class="brand"><b>.cs2</b>creator</div><div style="display:flex;align-items:center;gap:2px;margin-left:auto"><button class="ico" id="un" title="Отменить (Ctrl+Z)">↶</button><button class="ico" id="re" title="Вернуть (Ctrl+Shift+Z)">↷</button><div class="ver" id="ver" style="margin-left:8px">v46</div></div></div>
+<div class="top"><div class="brand"><b>.cs2</b>creator</div><div style="display:flex;align-items:center;gap:2px;margin-left:auto"><button class="ico" id="un" title="Отменить (Ctrl+Z)">↶</button><button class="ico" id="re" title="Вернуть (Ctrl+Shift+Z)">↷</button><div class="ver" id="ver" style="margin-left:8px">v47</div></div></div>
 <div class="app">
 <div class="col"><h1>Шаблоны</h1><div id="tpls"></div></div>
 <div class="col">
@@ -882,11 +882,24 @@ function drawRmbg(){const [w,h]=rmDims();X.clearRect(0,0,w,h);if(!RM.o){X.fillSt
   if(RM.mode=='wand'){rmFlood([Math.round(y)*RM.w+Math.round(x)]);return}down=true;cv.setPointerCapture(e.pointerId);dab(x,y);draw()});
  cv.addEventListener('pointermove',e=>{if(!down)return;const [x,y]=pt(e);dab(x,y);draw()});
  const up=()=>{down=false};cv.addEventListener('pointerup',up);cv.addEventListener('pointercancel',up)})();
+
+// ---- нейросеть RMBG-1.4 (transformers.js), результат = маска, дальше можно дочищать кистью ----
+let RMAI=null;
+async function rmAIload(){if(RMAI)return RMAI;const T=window.TFJS_MOD||await import('https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.0.2');T.env.allowLocalModels=false;
+ const pc=p=>{if(p.status==='progress'&&p.total)prog('Скачиваю нейросеть (только первый раз)… '+Math.round(p.loaded/p.total*100)+'%',Math.round(p.loaded/p.total*100))};
+ const model=await T.AutoModel.from_pretrained('briaai/RMBG-1.4',{config:{model_type:'custom'},progress_callback:pc});
+ const proc=await T.AutoProcessor.from_pretrained('briaai/RMBG-1.4',{config:{do_normalize:true,do_pad:false,do_rescale:true,do_resize:true,image_mean:[0.5,0.5,0.5],feature_extractor_type:'ImageFeatureExtractor',image_std:[1,1,1],resample:2,rescale_factor:0.00392156862745098,size:{width:1024,height:1024}},progress_callback:pc});
+ RMAI={T,model,proc};return RMAI}
+async function rmAI(){if(!RM.o)return;try{prog('Загружаю нейросеть…',null);const {T,model,proc}=await rmAIload();prog('Вырезаю фон…',null);await new Promise(r=>setTimeout(r,30));
+ const blob=await new Promise(r=>RM.o.toBlob(r,'image/png')),img=await T.RawImage.fromBlob(blob),{pixel_values}=await proc(img),{output}=await model({input:pixel_values});
+ const mask=await T.RawImage.fromTensor(output[0].mul(255).to('uint8')).resize(RM.w,RM.h);rmPush();
+ const g=RM.m.getContext('2d'),d=g.createImageData(RM.w,RM.h),D=d.data,md=mask.data,ch=mask.channels||1;for(let i=0;i<RM.w*RM.h;i++){D[i*4]=D[i*4+1]=D[i*4+2]=255;D[i*4+3]=md[i*ch]}
+ g.putImageData(d,0,0);RM.fe=0;draw();rmbgForm();progOff('Фон убран ✓')}catch(e){console.error(e);progOff('Нейросеть не запустилась: '+String(e.message||e).slice(0,90))}}
 function rmbgForm(){const has=!!RM.o,md=(m,t)=>`<button class="b ${RM.mode==m?'':'g'}" data-rm="${m}" style="flex:1;font-size:12px">${t}</button>`;
- $('fm').innerHTML=`<small style="display:block;margin-bottom:12px;line-height:1.5">Без нейросети: «Авто» убирает фон, который касается краёв фото (лучше всего с однотонным фоном). Дальше дочищаешь палочкой и кистью прямо на картинке.</small>
+ $('fm').innerHTML=`<small style="display:block;margin-bottom:12px;line-height:1.5">«Нейросеть» аккуратно вырезает игрока с любого фона (первый раз скачивается ~45 МБ, потом из кэша). «Быстро» — без нейросети, для однотонного фона. Дочищать можно палочкой и кистью прямо на картинке.</small>
  <label class="b ${has?'g':''}" style="width:100%;display:flex;align-items:center;justify-content:center;cursor:pointer;margin-bottom:8px">${has?'Заменить фото':'Загрузить фото'}<input type="file" accept="image/*" id="rmf" hidden></label>
  <div class="r"><button class="b g" id="rmc" style="flex:1">Вставить из буфера</button></div>
- ${has?`<button class="b" id="rma" style="width:100%;margin-bottom:12px">✂ Авто — убрать фон по краям</button>
+ ${has?`<button class="b" id="rmai" style="width:100%;margin-bottom:8px">✨ Нейросеть — вырезать человека</button><button class="b g" id="rma" style="width:100%;margin-bottom:12px">✂ Быстро — убрать однотонный фон по краям</button>
  <div class="r">${md('wand','🪄 Палочка')}${md('erase','Стереть')}${md('restore','Вернуть')}</div>
  <small style="display:block;margin:-2px 0 10px;line-height:1.5">${RM.mode=='wand'?'Нажми на участок фона — уберётся всё похожего цвета рядом.':RM.mode=='erase'?'Води по картинке — стирает.':'Води по картинке — возвращает стёртое.'}</small>
  <div class="r"><small>Допуск цвета</small><input type="range" min="5" max="120" value="${RM.tol}" id="rmt"></div>
@@ -896,7 +909,7 @@ function rmbgForm(){const has=!!RM.o,md=(m,t)=>`<button class="b ${RM.mode==m?''
  $('rmf').onchange=e=>{const f=e.target.files[0];if(f)loadImg(f)};
  $('rmc').onclick=async()=>{try{const it=await navigator.clipboard.read();for(const x of it){const t=x.types.find(t=>t.startsWith('image/'));if(t){loadImg(new File([await x.getType(t)],'c',{type:t}));return}}}catch(_){}$('rmc').textContent='Нажми Ctrl+V';setTimeout(()=>$('rmc').textContent='Вставить из буфера',1500)};
  if(!has)return;
- $('rma').onclick=rmAuto;$('fm').querySelectorAll('[data-rm]').forEach(b=>b.onclick=()=>{RM.mode=b.dataset.rm;rmbgForm()});
+ $('rma').onclick=rmAuto;$('rmai').onclick=rmAI;$('fm').querySelectorAll('[data-rm]').forEach(b=>b.onclick=()=>{RM.mode=b.dataset.rm;rmbgForm()});
  $('rmt').oninput=e=>RM.tol=+e.target.value;$('rmb').oninput=e=>RM.br=+e.target.value;$('rmfe').oninput=e=>{RM.fe=+e.target.value;draw()};
  $('rmu').onclick=rmUndo;$('rmr').onclick=()=>{rmPush();const g=RM.m.getContext('2d');g.globalCompositeOperation='source-over';g.fillStyle='#fff';g.fillRect(0,0,RM.w,RM.h);draw()}}
 let WAT=null;
