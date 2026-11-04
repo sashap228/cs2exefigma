@@ -53,7 +53,7 @@ details details{background:var(--bg);margin:10px 0 0}
 #pop{position:fixed;z-index:50;width:280px;max-height:360px;display:none;flex-direction:column;background:var(--p2);border:1px solid var(--b2);border-radius:12px;box-shadow:0 16px 48px rgba(0,0,0,.6);padding:8px}
 #pop input{margin-bottom:6px;border-color:var(--a)}#pop .ls{overflow:auto}#pop .it{display:flex;align-items:center;gap:10px;padding:8px;border-radius:7px;cursor:pointer}#pop .it:hover,#pop .it.on{background:var(--b)}#pop .it img{width:22px;height:22px;object-fit:contain}
 </style></head><body><div id="pop"><input id="ps" placeholder="Найти команду…" autocomplete="off"><div class="ls" id="pl"></div></div>
-<div class="top"><div class="brand"><b>.cs2</b>creator</div><div style="display:flex;align-items:center;gap:2px;margin-left:auto"><button class="ico" id="un" title="Отменить (Ctrl+Z)">↶</button><button class="ico" id="re" title="Вернуть (Ctrl+Shift+Z)">↷</button><div class="ver" id="ver" style="margin-left:8px">v52</div></div></div>
+<div class="top"><div class="brand"><b>.cs2</b>creator</div><div style="display:flex;align-items:center;gap:2px;margin-left:auto"><button class="ico" id="un" title="Отменить (Ctrl+Z)">↶</button><button class="ico" id="re" title="Вернуть (Ctrl+Shift+Z)">↷</button><div class="ver" id="ver" style="margin-left:8px">v53</div></div></div>
 <div class="app">
 <div class="col"><h1>Шаблоны</h1><div id="tpls"></div></div>
 <div class="col">
@@ -641,13 +641,15 @@ function dotaForm(){dgFix();const D=S.dg,E=D.el,row=(k,n)=>`<div class="mrow"><d
 S.act??={brand:'cs2',mode:'q',name:'DONK',team:'Team Spirit',hint:1,blur:28,pix:1,t1:'NAVI',t2:'Vitality',tour:'PGL MASTERS BUCHAREST 2026',time:'СЕГОДНЯ · 18:00',zoom:100,py:0};
 const ACT=()=>S.act,ACTK=['guess','who','poll'];
 function actBg(){const A=ACT();if(A.brand=='dota'){const g=X.createRadialGradient(540,520,80,540,540,820);g.addColorStop(0,'#5a2116');g.addColorStop(.55,'#2a120d');g.addColorStop(1,'#0e0807');X.fillStyle=g;X.fillRect(0,0,1080,1080);return}
- const g=X.createRadialGradient(540,600,60,540,540,780);g.addColorStop(0,'#2a2a2a');g.addColorStop(1,'#0c0c0c');X.fillStyle=g;X.fillRect(0,0,1080,1080);
- X.fillStyle='#f79400';P([[0,0],[230,0],[214,18],[0,22]]);P([[1080,0],[1080,250],[1060,240],[1062,0]]);P([[0,1080],[0,820],[20,836],[18,1080]]);P([[1080,1080],[790,1080],[806,1060],[1080,1058]])}
+ const g=X.createRadialGradient(540,620,60,540,560,820);g.addColorStop(0,'#262626');g.addColorStop(1,'#0d0d0d');X.fillStyle=g;X.fillRect(0,0,1080,1080);if(IMG.ovr)X.drawImage(IMG.ovr,0,0)}
 function actHead(t,sub){const A=ACT();if(A.brand=='dota'){if(IMG.dglogo){const m=IMG.dglogo,w=200,h=w*m.height/m.width;X.drawImage(m,540-w/2,58-h/2,w,h)}T('18+',40,56,`26px ${DGF},serif`,'rgba(176,140,125,.75)','left',0);
   let z=96;const f=z=>`${z}px ${DGF},serif`;while(z>30&&W(t,f(z),z*.06)>960)z--;TT(t,540,190,f(z),'#f6f0ee','center',z*.06);if(sub)TT(sub,540,236,`26px ${DGF},serif`,'rgba(240,215,205,.8)','center',2);return}
- tag(503,41);const z=fitS(t,"'Druk'",128,980,-.03);TT(t,540,205,`${z}px 'Druk'`,'#f79400','center',-.03*z);if(sub)TT(sub,540,250,`400 26px ${MONO}`,'#fff','center',-1)}
+ tag(503,41);const sp=t.lastIndexOf(' '),a=sp>0?t.slice(0,sp):'',b=sp>0?t.slice(sp+1):t;
+ if(a){const z=fitS(a,"'Druk'",88,940,-.056);TT(a,540,196,`${z}px 'Druk'`,'#f5f5f5','center',-.056*z)}
+ const z2=fitS(b,"'DrukI'",84,900,-.025),bw=W(b,`${z2}px 'DrukI'`,-.025*z2)+44,py=a?205:150;X.fillStyle='#f79400';X.fillRect(540-bw/2,py,bw,94);TT(b,540-2,py+82,`${z2}px 'DrukI'`,'#141414','center',-.025*z2);
+ if(sub)TT(sub,540,py+138,`400 20px ${MONO}`,'#fff','center',-1.07)}
 function actFoot(txt){const A=ACT();if(A.brand=='dota'){if(txt)TT(txt,540,1030,`30px ${DGF},serif`,'#f6f0ee','center',3);return}
- if(txt){const f=`400 26px ${MONO}`,w=W(txt,f,-1)+48;X.fillStyle='#f79400';X.fillRect(540-w/2,990,w,52);TT(txt,540,1025,f,'#111','center',-1)}else if(IMG.exe)X.drawImage(IMG.exe,497,1010)}
+ if(txt){const f=`400 22px ${MONO}`,w=W(txt,f,-1)+40;X.fillStyle='#f79400';X.fillRect(540-w/2,968,w,44);TT(txt,540,997,f,'#111','center',-1);if(IMG.exe)X.drawImage(IMG.exe,497,1026)}else if(IMG.exe)X.drawImage(IMG.exe,497,1010)}
 function actPlate(name,y){const A=ACT();name=(name||'').toUpperCase();if(!name)return;if(A.brand=='dota'){let z=84;const f=z=>`${z}px ${DGF},serif`;while(z>24&&W(name,f(z),z*.06)>900)z--;const w=W(name,f(z),z*.06)+80,h=z*.72+56;
   X.save();X.beginPath();X.roundRect(540-w/2,y-h/2,w,h,8);X.fillStyle='rgba(20,8,6,.55)';X.fill();X.lineWidth=1.5;X.strokeStyle='rgba(255,235,225,.3)';X.stroke();X.restore();TT(name,540,y+z*.36,f(z),'#f6f0ee','center',z*.06);return}
  const z=fitS(name,"'Druk'",120,880,-.03),w=W(name,`${z}px 'Druk'`,-.03*z)+70;X.save();X.translate(540,y);X.rotate(-1.5*Math.PI/180);P([[-w/2,-z*.45],[w/2,-z*.45],[w/2+6,z*.45],[-w/2,z*.45]],'#0a0a10');TT(name,0,z*.33,`${z}px 'Druk'`,'#f5f5f5','center',-.03*z);X.restore()}
@@ -661,17 +663,17 @@ function actCover(mode){const p=im.act_p,A=ACT();if(!p)return false;const s=Math
  const g=X.createLinearGradient(0,0,0,1080);g.addColorStop(0,'rgba(0,0,0,.7)');g.addColorStop(.32,'rgba(0,0,0,0)');g.addColorStop(.7,'rgba(0,0,0,0)');g.addColorStop(1,'rgba(0,0,0,.75)');X.fillStyle=g;X.fillRect(0,0,1080,1080);return true}
 function noPhoto(){X.fillStyle='rgba(255,255,255,.35)';X.font=`500 28px ${MONO}`;X.textAlign='center';X.textBaseline='middle';X.fillText('Выбери игрока или загрузи фото',540,600)}
 function drawGuess(){const A=ACT();actBg();const q=A.mode=='q';
- if(q){actHead('УГАДАЙ ИГРОКА','ОТВЕТ — В КОММЕНТАРИЯХ');if(!actPhoto([140,290,800,700],'sil'))noPhoto();
+ if(q){actHead('УГАДАЙ ИГРОКА','ОТВЕТ — В КОММЕНТАРИЯХ');if(!actPhoto(AF()?[140,290,800,700]:[190,370,700,620],'sil'))noPhoto();
   if(A.hint&&A.team){const t=findTeam(A.team);if(t&&t.img&&t.img.width){const s=Math.min(110/t.img.width,110/t.img.height),w=t.img.width*s,h=t.img.height*s;X.save();X.globalAlpha=.9;X.drawImage(A.brand=='dota'?whiteLogo(t.img):whiteLogo(t.img),920-w/2,880-h/2,w,h);X.restore();TT('ПОДСКАЗКА',920,955,`400 18px ${A.brand=='dota'?DGF+',serif':MONO}`,'rgba(255,255,255,.7)','center',1)}}
   actFoot('')}
- else{actHead('ПРАВИЛЬНЫЙ ОТВЕТ','');if(!actPhoto([140,270,800,720],'img'))noPhoto();actPlate(A.name,900);actFoot('')}}
+ else{actHead('ПРАВИЛЬНЫЙ ОТВЕТ','');if(!actPhoto(AF()?[140,270,800,720]:[190,340,700,600],'img'))noPhoto();actPlate(A.name,900);actFoot('')}}
 function drawWho(){const A=ACT();actBg();const q=A.mode=='q';if(!actCover(q?'q':'a')){noPhoto()}
  if(q){actHead('КТО ЭТО?','ПИШИ ОТВЕТ В КОММЕНТАРИЯХ');actFoot('')}else{actHead('ЭТО','');actPlate(A.name,900);actFoot('')}}
 function drawPoll(){const A=ACT();actBg();actHead('КТО ПОБЕДИТ?',(A.tour||'').toUpperCase());
- const lg=(n,cx)=>{const t=findTeam(n),i=t&&t.img;if(i&&i.width){const s=Math.min(300/i.width,300/i.height),w=i.width*s,h=i.height*s;X.drawImage(whiteLogo(i),cx-w/2,560-h/2,w,h)}
+ const lg=(n,cx)=>{const t=findTeam(n),i=t&&t.img;if(i&&i.width){const s=Math.min(280/i.width,280/i.height),w=i.width*s,h=i.height*s;X.drawImage(whiteLogo(i),cx-w/2,(AF()?560:580)-h/2,w,h)}
   const nm=((t&&t.n!='TBD'?short(t.n):n)||'').toUpperCase();if(A.brand=='dota'){let z=56;const f=z=>`${z}px ${DGF},serif`;while(z>20&&W(nm,f(z),z*.05)>400)z--;TT(nm,cx,800,f(z),'#f6f0ee','center',z*.05)}else{const z=fitS(nm,"'Druk'",80,400,-.03);TT(nm,cx,810,`${z}px 'Druk'`,'#f79400','center',-.03*z)}};
  lg(A.t1,290);lg(A.t2,790);
- if(A.brand=='dota')TT('VS',540,585,`60px ${DGF},serif`,'rgba(255,220,205,.7)','center',4);else TT('VS',540,600,"110px 'DrukI'",'#5e5e5e','center',-4);
+ if(A.brand=='dota')TT('VS',540,585,`60px ${DGF},serif`,'rgba(255,220,205,.7)','center',4);else TT('VS',540,620,"110px 'DrukI'",'#5e5e5e','center',-4);
  if(A.time)TT(A.time.toUpperCase(),540,885,A.brand=='dota'?`30px ${DGF},serif`:`400 30px ${MONO}`,'#fff','center',A.brand=='dota'?2:-1);
  actFoot('ГОЛОСУЙ В ОПРОСЕ ↓')}
 function actPick(p){S.act.name=p.n.toUpperCase();S.act.team=p.t;const i=new Image();i.onload=()=>{im.act_p=i;draw();actForm()};i.onerror=()=>progOff('Фото не загрузилось — папка players/ на сайте?');i.src='players/'+p.f}
@@ -706,10 +708,10 @@ function actMono(t,x,y,size,col,al='center'){TT(t,x,y,AF()?`${size*1.1}px ${DGF}
 function wrapLines(t,font,ls,max){const out=[];(t||'').split('\n').forEach(p=>{let l='';p.split(/\s+/).filter(Boolean).forEach(w=>{const q=l?l+' '+w:w;if(W(q,font,ls)>max&&l){out.push(l);l=w}else l=q});out.push(l)});return out}
 // 4. Кого возьмёшь
 function drawPick(){const A=ACT();actBg();actHead('КОГО ВОЗЬМЁШЬ?','СТАВЬ РЕАКЦИЮ');
- [[im.act_pa,A.pa,270,'1️⃣'],[im.act_pb,A.pb,810,'2️⃣']].forEach(([p,n,cx,em])=>{if(p){const s=Math.min(470/p.width,600/p.height),w=p.width*s,h=p.height*s;X.drawImage(p,cx-w/2,920-h,w,h)}
+ [[im.act_pa,A.pa,270,'1️⃣'],[im.act_pb,A.pb,810,'2️⃣']].forEach(([p,n,cx,em])=>{if(p){const s=Math.min(470/p.width,(AF()?600:520)/p.height),w=p.width*s,h=p.height*s;X.drawImage(p,cx-w/2,920-h,w,h)}
   const nm=(n||'').toUpperCase();if(AF()){let z=58;const f=z=>`${z}px ${DGF},serif`;while(z>20&&W(nm,f(z),z*.05)>440)z--;const w=W(nm,f(z),z*.05)+50;X.save();X.beginPath();X.roundRect(cx-w/2,880,w,74,8);X.fillStyle='rgba(20,8,6,.6)';X.fill();X.strokeStyle='rgba(255,235,225,.3)';X.lineWidth=1.5;X.stroke();X.restore();TT(nm,cx,880+37+z*.34,f(z),'#f6f0ee','center',z*.05)}
   else{const z=fitS(nm,"'Druk'",80,440,-.03),w=W(nm,`${z}px 'Druk'`,-.03*z)+40;X.fillStyle='#0a0a10';X.fillRect(cx-w/2,875,w,z*.9+16);TT(nm,cx,875+z*.75+8,`${z}px 'Druk'`,'#f5f5f5','center',-.03*z)}
-  T(em,cx,330,'64px serif','#fff','center',0,'middle')});
+  T(em,cx,AF()?330:420,'64px serif','#fff','center',0,'middle')});
  if(AF())TT('ИЛИ',540,620,`54px ${DGF},serif`,'rgba(255,220,205,.7)','center',4);else TT('ИЛИ',540,640,"90px 'DrukI'",'#5e5e5e','center',-3);actFoot('')}
 function pickForm(){const A=ACT(),btn=(id,n)=>{const p=findPlayer(n);return `<button class="tp" id="${id}"><span>${p?p.n+' · '+p.t:(n||'Выбрать')}</span><i>▾</i></button>`};
  $('fm').innerHTML=actTop(0)+`<div class="r"><small>Игрок 1</small>${btn('apa',A.pa)}</div><div class="r"><small>Игрок 2</small>${btn('apb',A.pb)}</div><div class="r"><button class="b g" id="apr" style="flex:1">🎲 Случайная пара</button></div><small style="display:block;line-height:1.5">Подписчики голосуют реакциями 1️⃣ / 2️⃣ — их можно включить в настройках канала.</small>`;
@@ -719,10 +721,10 @@ function pickForm(){const A=ACT(),btn=(id,n)=>{const p=findPlayer(n);return `<bu
  ['pa','pb'].forEach(k=>{if(!im['act_'+k]){const p=findPlayer(A[k]);if(p)ld(k,p)}})}
 // 5. Угадай команду по куску логотипа
 function drawLogoQ(){const A=ACT();actBg();const t=findTeam(A.lteam),i=t&&t.img,q=A.mode=='q';
- if(q){actHead('УГАДАЙ КОМАНДУ','ПО КУСОЧКУ ЛОГОТИПА');if(i&&i.width){const R=300,cx=540,cy=620,s=Math.max(R*2/i.width,R*2/i.height)*A.lz,w=i.width*s,h=i.height*s;
+ if(q){actHead('УГАДАЙ КОМАНДУ','ПО КУСОЧКУ ЛОГОТИПА');if(i&&i.width){const R=AF()?300:270,cx=540,cy=AF()?620:650,s=Math.max(R*2/i.width,R*2/i.height)*A.lz,w=i.width*s,h=i.height*s;
   X.save();X.beginPath();X.arc(cx,cy,R,0,7);X.fillStyle=AF()?'rgba(0,0,0,.35)':'#151515';X.fill();X.clip();X.drawImage(whiteLogo(i),cx-A.lx*w,cy-A.ly*h,w,h);X.restore();
   X.beginPath();X.arc(cx,cy,R,0,7);X.lineWidth=6;X.strokeStyle=AF()?'rgba(255,235,225,.45)':'#f79400';X.stroke()}actFoot('')}
- else{actHead('ПРАВИЛЬНЫЙ ОТВЕТ','');if(i&&i.width){const s=Math.min(520/i.width,460/i.height),w=i.width*s,h=i.height*s;X.drawImage(whiteLogo(i),540-w/2,580-h/2,w,h)}actPlate(t&&t.n!='TBD'?t.n:A.lteam,900);actFoot('')}}
+ else{actHead('ПРАВИЛЬНЫЙ ОТВЕТ','');if(i&&i.width){const s=Math.min(520/i.width,(AF()?460:400)/i.height),w=i.width*s,h=i.height*s;X.drawImage(whiteLogo(i),540-w/2,(AF()?580:600)-h/2,w,h)}actPlate(t&&t.n!='TBD'?t.n:A.lteam,900);actFoot('')}}
 function logoForm(){const A=ACT(),t=findTeam(A.lteam);
  $('fm').innerHTML=actTop(1)+`<div class="r"><small>Команда</small><button class="tp" id="alt">${t?`<img src="${t.l}">`:''}<span>${t?t.n:'Выбрать'}</span><i>▾</i></button><button class="b g" id="alr">🎲</button></div>
  <div class="r"><small>Приближение</small><input type="range" min="10" max="80" value="${A.lz*10}" id="alz"></div><div class="r"><small>Кусок X</small><input type="range" min="0" max="100" value="${A.lx*100}" id="alx"></div><div class="r"><small>Кусок Y</small><input type="range" min="0" max="100" value="${A.ly*100}" id="aly"></div>
@@ -732,11 +734,11 @@ function logoForm(){const A=ACT(),t=findTeam(A.lteam);
  $('alz').oninput=e=>{A.lz=e.target.value/10;draw()};$('alx').oninput=e=>{A.lx=e.target.value/100;draw()};$('aly').oninput=e=>{A.ly=e.target.value/100;draw()}}
 // 6. Угадай счёт реакцией
 function drawScore(){const A=ACT();actBg();actHead('УГАДАЙ СЧЁТ',(A.tour||'').toUpperCase());
- const lg=(n,cx)=>{const t=findTeam(n),i=t&&t.img;if(i&&i.width){const s=Math.min(190/i.width,190/i.height),w=i.width*s,h=i.height*s;X.drawImage(whiteLogo(i),cx-w/2,430-h/2,w,h)}const nm=((t&&t.n!='TBD'?short(t.n):n)||'').toUpperCase();actText(nm,cx,600,AF()?56:64)};
- lg(A.t1,300);lg(A.t2,780);actMono('VS',540,445,40,'rgba(255,255,255,.55)');
+ const lg=(n,cx)=>{const t=findTeam(n),i=t&&t.img;if(i&&i.width){const s=Math.min(190/i.width,190/i.height),w=i.width*s,h=i.height*s;X.drawImage(whiteLogo(i),cx-w/2,(AF()?430:470)-h/2,w,h)}const nm=((t&&t.n!='TBD'?short(t.n):n)||'').toUpperCase();actText(nm,cx,AF()?600:640,AF()?56:60)};
+ lg(A.t1,300);lg(A.t2,780);actMono('VS',540,AF()?445:485,40,'rgba(255,255,255,.55)');
  const L=(A.scores||'').split('\n').map(l=>l.trim()).filter(Boolean).slice(0,6),n=L.length,cw=Math.min(230,960/Math.max(1,n));
- L.forEach((l,i)=>{const m=l.match(/^(\S+)\s+(.*)$/)||[0,'',l],cx=540+(i-(n-1)/2)*cw;X.save();X.beginPath();X.roundRect(cx-cw/2+10,680,cw-20,230,14);X.fillStyle=AF()?'rgba(20,8,6,.5)':'#191919';X.fill();if(AF()){X.strokeStyle='rgba(255,235,225,.25)';X.lineWidth=1.5;X.stroke()}X.restore();
-  T(m[1],cx,750,'64px serif','#fff','center',0,'middle');actText(m[2],cx,875,AF()?62:72,AF()?'#f6f0ee':'#f79400')});
+ L.forEach((l,i)=>{const m=l.match(/^(\S+)\s+(.*)$/)||[0,'',l],cx=540+(i-(n-1)/2)*cw;X.save();X.beginPath();X.roundRect(cx-cw/2+10,AF()?680:690,cw-20,AF()?230:210,14);X.fillStyle=AF()?'rgba(20,8,6,.5)':'#191919';X.fill();if(AF()){X.strokeStyle='rgba(255,235,225,.25)';X.lineWidth=1.5;X.stroke()}X.restore();
+  T(m[1],cx,AF()?750:752,'60px serif','#fff','center',0,'middle');actText(m[2],cx,AF()?875:868,AF()?62:72,AF()?'#f6f0ee':'#f79400')});
  actFoot('СТАВЬ РЕАКЦИЮ ↓')}
 function scoreForm(){const A=ACT();$('fm').innerHTML=actTop(0)+`<div class="mrow"><div class="r">${tpBtn(A.t1,0,1)}<button class="ico" id="asw">⇄</button>${tpBtn(A.t2,0,2)}</div></div><div class="r"><small>Турнир</small><input id="atr" value="${A.tour}"></div>
  <small>Варианты (реакция и счёт, по строке)</small><textarea id="asc" style="height:110px">${A.scores}</textarea><div class="r"><button class="b g" data-sp="bo3" style="flex:1">BO3</button><button class="b g" data-sp="bo1" style="flex:1">BO1</button><button class="b g" data-sp="bo5" style="flex:1">BO5</button></div>`;
